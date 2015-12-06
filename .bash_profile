@@ -2,8 +2,8 @@ if [[ -s ~/.profile ]]; then
   . ~/.profile
 fi
 
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-    . `brew --prefix`/etc/bash_completion
+if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
+  . $(brew --prefix)/etc/bash_completion
 fi
 
 if tput setaf 1 &> /dev/null; then
@@ -64,7 +64,7 @@ if [[ -f /usr/libexec/java_home ]]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
-if [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
+if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
