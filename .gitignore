@@ -4,9 +4,12 @@
 !.vim/after/**
 !.vim/autoload
 !.vim/autoload/**
+!.vim/bundle
+!.vim/bundle/**
 !.vim/plugin
 !.vim/plugin/**
 !.vimrc
 !.profile
 !.bash_profile
 !.gitignore
+!.gitmodules
