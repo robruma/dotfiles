@@ -1,0 +1,12 @@
+*
+!.vim/
+!.vim/after
+!.vim/after/**
+!.vim/autoload
+!.vim/autoload/**
+!.vim/plugin
+!.vim/plugin/**
+!.vimrc
+!.profile
+!.bash_profile
+!.gitignore
