@@ -8,6 +8,8 @@
 !.vim/bundle/**
 !.vim/plugin
 !.vim/plugin/**
+!.vim/tools
+!.vim/tools/**
 !.vimrc
 !.profile
 !.bash_profile
