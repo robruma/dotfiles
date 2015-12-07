@@ -49,7 +49,7 @@ function parse_git_dirty() {
 function parse_git_branch() {
   BRANCH=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\(\1\)$(parse_git_dirty)/")
   case $BRANCH in
-    \(master\)*) echo -n "${RESET}${LTBLUE}${BRANCH}" ;;
+    \(master\)*) if [[ ! $(git config --get remote.origin.url) =~ dotfiles ]]; then echo -n "${RESET}${LTBLUE}${BRANCH}" ; else echo -n "${RESET}${BLINK}${ORANGE}±"; fi ;;
     \(production\)*) echo -n "${RESET}${RED}${BRANCH}" ;;
     \(testing\)*) echo -n "${RESET}${GREEN}${BRANCH}" ;;
     \(${USER}\)*) echo -n "${RESET}${GREEN}${BRANCH}" ;;
