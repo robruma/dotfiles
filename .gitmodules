@@ -29,8 +29,8 @@
   path = .vim/bundle/vim-surround
   url = git@github.com:tpope/vim-surround.git
 [submodule ".vim/tools/vim-pathogen"]
-	path = .vim/tools/vim-pathogen
-	url = git@github.com:tpope/vim-pathogen.git
+  path = .vim/tools/vim-pathogen
+  url = git@github.com:tpope/vim-pathogen.git
 [submodule ".vim/bundle/vdebug"]
-	path = .vim/bundle/vdebug
-	url = git@github.com:joonty/vdebug.git
+  path = .vim/bundle/vdebug
+  url = git@github.com:joonty/vdebug.git
