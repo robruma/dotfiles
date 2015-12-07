@@ -43,7 +43,7 @@ function is_on_git() {
 }
 
 function parse_git_dirty() {
-  [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo -n "${RESET}${BLINK}${ORANGE}±"
+  [[ ! $(git status 2> /dev/null | tail -n1) =~ clean ]] && echo -n "${RESET}${BLINK}${ORANGE}±"
 }
 
 function parse_git_branch() {
