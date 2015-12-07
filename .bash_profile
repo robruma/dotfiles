@@ -53,11 +53,11 @@ function parse_git_branch() {
     \(production\)*) echo -n "${RESET}${RED}${BRANCH}" ;;
     \(testing\)*) echo -n "${RESET}${GREEN}${BRANCH}" ;;
     \(${USER}\)*) echo -n "${RESET}${GREEN}${BRANCH}" ;;
-    *) echo -n $BRANCH
+    *) echo -n ${BRANCH}
   esac
 }
 
-PS1="[\u@\h \W]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]])\[$LTGRAYBG\]\[$WHITE\]\$(parse_git_branch)\[$RESET\]\\$ "
+PS1="[\u@\h \W]\$(is_on_git && [[ -n \$(git branch 2> /dev/null) ]])\[${LTGRAYBG}\]\[${WHITE}\]\$(parse_git_branch)\[${RESET}\]\\$ "
 export SUDO_PS1='\h:\W \u\$ '
 
 if [[ -f /usr/libexec/java_home ]]; then
