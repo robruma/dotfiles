@@ -7,7 +7,7 @@ if [[ -s ~/.bashrc ]]; then
 fi
 
 # Set config variables first
-#GIT_PROMPT_ONLY_IN_REPO=1
+# GIT_PROMPT_ONLY_IN_REPO=1
 
 # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
 
