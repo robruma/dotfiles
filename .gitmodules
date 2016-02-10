@@ -35,5 +35,5 @@
   path = .vim/bundle/vdebug
   url = git@github.com:joonty/vdebug.git
 [submodule ".bash-git-prompt"]
-	path = .bash-git-prompt
-	url = git@github.com:magicmonty/bash-git-prompt.git
+  path = .bash-git-prompt
+  url = git@github.com:magicmonty/bash-git-prompt.git
