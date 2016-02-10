@@ -10,9 +10,10 @@
 !.vim/plugin/**
 !.vim/tools
 !.vim/tools/**
+!.bash-git-prompt
+!.bash-git-prompt/**
 !.vimrc
 !.profile
 !.bash_profile
-!.bash-git-prompt
 !.gitignore
 !.gitmodules
