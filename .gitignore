@@ -12,6 +12,7 @@
 !.vim/tools/**
 !.bash-git-prompt
 !.bash-git-prompt/**
+!.bash-git-rc
 !.vimrc
 !.profile
 !.bash_profile
