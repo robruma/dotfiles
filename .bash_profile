@@ -15,9 +15,14 @@ GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
 # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
+if [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -V | head -n1) == 1.7.10 ]]; then
+  GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh
+fi
 
-GIT_PROMPT_START="[\u@\h \W]"    # uncomment for custom prompt start sequence
-GIT_PROMPT_END="\$ "      # uncomment for custom prompt end sequence
+# GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
+# GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
+GIT_PROMPT_START="[\u@\h \W]"
+GIT_PROMPT_END="\$ "
 
 # as last entry source the gitprompt script
 # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
