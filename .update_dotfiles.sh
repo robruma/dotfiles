@@ -4,6 +4,7 @@
 COMMENT=${@:-"Updating dotfiles"}
 
 # Run git commands to properly update all submodules within this repo
+git fetch
 git pull origin master 
 git submodule init 
 git submodule foreach --recursive git pull origin master
