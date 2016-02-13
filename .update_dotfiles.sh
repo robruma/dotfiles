@@ -1,9 +1,5 @@
 #!/bin/bash
-if [[ $# -gt 0 ]]; then
-  COMMENT=${@}
-else
-  COMMENT="Updating dotfiles"
-fi
+COMMENT=${@:?"Updating dotfiles"}
 git pull origin master 
 git submodule init 
 git submodule foreach --recursive git pull origin master
