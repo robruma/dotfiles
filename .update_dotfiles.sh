@@ -1,5 +1,4 @@
 #!/bin/bash
-
 COMMENT=${@:-"Updating dotfiles"}
 
 git pull origin master 
