@@ -35,6 +35,7 @@ map t :Tab block<CR>
 map j :%!python -m json.tool<CR>
 "let g:syntastic_debug=17
 if has("autocmd")
-  au BufRead,BufNewFile *.pp set filetype=puppet
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  autocmd BufRead,BufNewFile *.pp set filetype=puppet
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  "autocmd FileType python setlocal shiftwidth=4 tabstop=4
 endif

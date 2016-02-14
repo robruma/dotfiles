@@ -50,3 +50,7 @@
   path = .bash-git-prompt
   url = https://github.com/magicmonty/bash-git-prompt.git
   branch = master
+[submodule ".vim/bundle/vim-python-pep8-indent"]
+  path = .vim/bundle/vim-python-pep8-indent
+  url = https://github.com/hynek/vim-python-pep8-indent.git
+  branch = master
