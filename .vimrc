@@ -37,5 +37,4 @@ map j :%!python -m json.tool<CR>
 if has("autocmd")
   autocmd BufRead,BufNewFile *.pp set filetype=puppet
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-  "autocmd FileType python setlocal shiftwidth=4 tabstop=4
 endif
