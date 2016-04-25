@@ -2,10 +2,10 @@ set nocompatible
 set expandtab
 set smarttab
 set autoindent
+set smartindent
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
-set autoindent
 execute pathogen#infect()
 call pathogen#helptags()
 syntax on
@@ -33,8 +33,8 @@ let g:syntastic_loc_list_height=1
 hi Search cterm=NONE ctermfg=grey ctermbg=red
 map t :Tab block<CR>
 map j :%!python -m json.tool<CR>
-au BufRead,BufNewFile *.pp set filetype=puppet
 "let g:syntastic_debug=17
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  autocmd BufRead,BufNewFile *.pp set filetype=puppet
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif

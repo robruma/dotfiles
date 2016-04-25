@@ -18,3 +18,4 @@
 !.bash_profile
 !.gitignore
 !.gitmodules
+!update_dotfiles.sh
