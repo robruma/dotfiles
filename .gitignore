@@ -14,8 +14,7 @@
 !.bash-git-prompt/**
 !.bash-git-rc
 !.vimrc
-!.profile
 !.bash_profile
 !.gitignore
 !.gitmodules
-!update_dotfiles.sh
+!.update_dotfiles.sh
