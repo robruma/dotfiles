@@ -15,7 +15,9 @@ install gettext
 install git
 install gnu-getopt
 install gnupg
+install gpgtools
 install heimdal
+install java
 install kubernetes-cli
 install kubernetes-helm
 install libgpg-error
@@ -39,7 +41,9 @@ install ruby-build
 install sqlite
 install terraform
 install tree
+install vagrant
 install vagrant-completion
+install virtualbox
 install wakeonlan
 install watch
 install whatmask
