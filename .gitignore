@@ -1,4 +1,12 @@
 *
+!.bash-git-prompt
+!.bash-git-prompt/**
+!.bash-git-rc
+!.bash_profile
+!.Brewfile
+!.gitignore
+!.gitmodules
+!.vimrc
 !.vim/
 !.vim/after
 !.vim/after/**
@@ -10,11 +18,4 @@
 !.vim/plugin/**
 !.vim/tools
 !.vim/tools/**
-!.bash-git-prompt
-!.bash-git-prompt/**
-!.bash-git-rc
-!.vimrc
-!.bash_profile
-!.gitignore
-!.gitmodules
 !.update_dotfiles.sh
