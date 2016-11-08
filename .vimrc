@@ -33,6 +33,7 @@ let g:syntastic_loc_list_height=1
 hi Search cterm=NONE ctermfg=grey ctermbg=red
 map t :Tab block<CR>
 map j :%!python -m json.tool<CR>
+map <C-n> :NERDTreeToggle<CR>
 "let g:syntastic_debug=17
 if has("autocmd")
   autocmd BufRead,BufNewFile *.pp set filetype=puppet
