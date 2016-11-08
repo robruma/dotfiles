@@ -28,6 +28,12 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_loc_list_height=1
+let g:go_highlight_functions=1
+let g:go_highlight_methods=1
+let g:go_highlight_fields=1
+let g:go_highlight_types=1
+let g:go_highlight_operators=1
+let g:go_highlight_build_constraints=1
 "let g:syntastic_puppet_puppetlint_args='--fix'
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'puppet'], 'passive_filetypes': [] }
 hi Search cterm=NONE ctermfg=grey ctermbg=red
