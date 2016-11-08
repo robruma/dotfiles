@@ -66,3 +66,8 @@
   path = .vim/bundle/salt-vim
   url = https://github.com/saltstack/salt-vim.git
   branch = master
+[submodule ".vim/bundle/nerdtree"]
+  path = .vim/bundle/nerdtree
+  url = https://github.com/scrooloose/nerdtree.git
+  branch = master
+
