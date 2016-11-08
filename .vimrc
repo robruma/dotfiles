@@ -38,4 +38,5 @@ map <C-n> :NERDTreeToggle<CR>
 if has("autocmd")
   autocmd BufRead,BufNewFile *.pp set filetype=puppet
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 endif
