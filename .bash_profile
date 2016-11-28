@@ -54,3 +54,5 @@ fi
 if [[ -f ~/.alias ]]; then
   . ~/.alias
 fi
+
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
