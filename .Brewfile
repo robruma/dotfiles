@@ -1,3 +1,4 @@
+# brew bundle --global
 tap 'caskroom/cask'
 tap 'homebrew/boneyard'
 tap 'homebrew/bundle'
