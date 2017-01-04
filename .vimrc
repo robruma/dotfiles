@@ -37,8 +37,8 @@ let g:go_highlight_build_constraints=1
 "let g:syntastic_puppet_puppetlint_args='--fix'
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'puppet'], 'passive_filetypes': [] }
 hi Search cterm=NONE ctermfg=grey ctermbg=red
-map t :Tab block<CR>
-map j :%!python -m json.tool<CR>
+map <C-t> :Tab block<CR>
+map <C-j> :%!python -m json.tool<CR>
 map <C-n> :NERDTreeToggle<CR>
 "let g:syntastic_debug=17
 if has("autocmd")
