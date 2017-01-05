@@ -10,13 +10,21 @@ BRANCH=${BRANCH:-HEAD}
 
 # Conditionally run git commands to properly update all submodules within this repo
 git fetch
-if [[ -n $(git status --porcelain) ]] || [[ $(git diff --exit-code --quiet origin/${BRANCH}) ]]; then
+
+update_checkout() {
   git pull origin ${BRANCH} 
   git submodule init 
   git submodule foreach --recursive git pull origin ${BRANCH}
   git commit -a -m "${COMMENT}"
   git push origin ${BRANCH}
   git submodule update
+}
+
+if [[ -n $(git status --porcelain) ]]; then
+  update_checkout
+  if [[ $(git diff --exit-code --quiet origin/${BRANCH}) ]]; then
+    update_checkout
+  fi
 else
   echo "Nothing to update"
 fi
