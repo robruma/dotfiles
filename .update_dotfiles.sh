@@ -18,6 +18,7 @@ update_checkout() {
   git commit -a -m "${COMMENT}"
   git push origin ${BRANCH}
   git submodule update
+  exit $?
 }
 
 if [[ -n $(git status --porcelain) ]]; then
