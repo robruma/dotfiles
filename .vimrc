@@ -38,11 +38,20 @@ let g:go_highlight_build_constraints=1
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'puppet'], 'passive_filetypes': [] }
 hi Search cterm=NONE ctermfg=grey ctermbg=red
 map <C-t> :Tab block<CR>
-map <C-j> :%!python -m json.tool<CR>
+map <C-J> :%!python -m json.tool<CR>
 map <C-n> :NERDTreeToggle<CR>
 "let g:syntastic_debug=17
 if has("autocmd")
   autocmd BufRead,BufNewFile *.pp set filetype=puppet
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+	autocmd FileType java setlocal omnifunc=javacomplete#Complete
 endif
+nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
+nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)

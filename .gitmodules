@@ -74,3 +74,7 @@
   path = .vim/bundle/vim-go
   url = https://github.com/fatih/vim-go.git
   branch = master
+[submodule ".vim/bundle/vim-javacomplete2"]
+  path = .vim/bundle/vim-javacomplete2
+  url = https://github.com/artur-shaik/vim-javacomplete2.git
+  branch = master
