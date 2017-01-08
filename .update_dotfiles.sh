@@ -10,7 +10,10 @@ BRANCH=${BRANCH:-HEAD}
 
 # Fetch changes then check remote and local status to conditionally update all submodules
 git fetch
+<<<<<<< HEAD
 
+=======
+>>>>>>> 02153b75ea29ac741f9de2f836b9689040e68a0f
 if [[ ! $(git diff --exit-code --quiet origin/${BRANCH}) ]] || [[ -n $(git status --porcelain) ]]; then
   git pull origin ${BRANCH} 
   git submodule init 
