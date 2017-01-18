@@ -10,7 +10,7 @@ BRANCH=${BRANCH:-HEAD}
 
 # Fetch changes then check remote and local status to conditionally update all submodules
 git fetch
-if ! git diff --exit-code --quiet origin/${BRANCH} || [[ $(git submodule update --recursive --remote 2>&1 > /dev/null; git submodule status --recursive) =~ ^+.* ]] || [[ -n $(git status --porcelain) ]]; then
+if ! git diff --exit-code --quiet origin/${BRANCH} || [[ $(git submodule update --recursive --remote > /dev/null 2>&1; git submodule status --recursive) =~ ^+.* ]] || [[ -n $(git status --porcelain) ]]; then
   git pull origin ${BRANCH}
   git submodule init
   git submodule foreach --recursive git pull origin ${BRANCH}
