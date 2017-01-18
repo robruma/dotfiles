@@ -49,9 +49,9 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
-  BREW_OUTDATED=$(/usr/local/bin/brew outdated)
+  BREW_OUTDATED=$(/usr/local/bin/brew update 2>&1 > /dev/null && /usr/local/bin/brew outdated)
   if [[ -n $BREW_OUTDATED ]]; then
-    echo -e "The following Homebrew packages need to be updated:\n\n${BREW_OUTDATED}\n\nRun 'brew update; brew upgrade'"
+    echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n\nRun 'brew upgrade'"
   fi
 fi
 
