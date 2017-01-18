@@ -37,6 +37,10 @@ if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
+if [[ -f ~/.update_dotfiles.sh ]]; then
+  ~/.update_dotfiles.sh 2>&1 > /dev/null
+fi
+
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
   . $(brew --prefix)/etc/bash_completion
 fi
