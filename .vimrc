@@ -48,9 +48,9 @@ if has("autocmd")
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
   autocmd FileType java setlocal omnifunc=javacomplete#Complete
-	autocmd FileType java setlocal shiftwidth=4
-	autocmd FileType java setlocal softtabstop=4
-	autocmd FileType java setlocal tabstop=4
+  autocmd FileType java setlocal shiftwidth=4
+  autocmd FileType java setlocal softtabstop=4
+  autocmd FileType java setlocal tabstop=4
 endif
 nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
