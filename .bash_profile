@@ -37,7 +37,7 @@ if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
-if [[ -f ~/.update_dotfiles.sh ]]; then
+if [[ -x ~/.update_dotfiles.sh ]]; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
 fi
 
@@ -56,6 +56,9 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
   BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
   if [[ -n $BREW_OUTDATED ]]; then
     echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n\nRun 'brew upgrade'"
+  fi
+  if [[ -f ~/.Brewfile ]]; then
+    /usr/local/bin/brew bundle --global > /dev/null 2>&1
   fi
 fi
 
