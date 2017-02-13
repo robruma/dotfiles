@@ -15,7 +15,7 @@ GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
 # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
-if [[ $(which git 2>&1 > /dev/null) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
+if [[ $(which git > /dev/null 2>&1) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
   GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh
 fi
 
@@ -37,6 +37,10 @@ if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
+if [[ -x ~/.update_dotfiles.sh ]]; then
+  ~/.update_dotfiles.sh > /dev/null 2>&1
+fi
+
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
   . $(brew --prefix)/etc/bash_completion
 fi
@@ -49,9 +53,9 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
-  BREW_OUTDATED=$(/usr/local/bin/brew outdated)
+  BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
   if [[ -n $BREW_OUTDATED ]]; then
-    echo -e "The following Homebrew packages need to be updated:\n\n${BREW_OUTDATED}\n\nRun 'brew update; brew upgrade'"
+    echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n\nRun 'brew upgrade'"
   fi
 fi
 
