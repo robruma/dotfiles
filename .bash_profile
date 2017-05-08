@@ -61,7 +61,7 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
       echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n\nRun 'brew upgrade'"
     fi
   else
-    echo -e "\nSkipping Homebrew updates"
+    echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check then 'brew upgrade' if necessary"
   fi
 fi
 
