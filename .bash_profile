@@ -53,7 +53,7 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
 	read_prompt() {
-    trap "pkill -P $$ 2>&1>/dev/null" INT TERM EXIT
+    trap true INT TERM EXIT
     if [[ $# -lt 2 ]]; then
       exit 0
     fi
