@@ -53,6 +53,10 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
 	read_prompt() {
+    trap "pkill -P $$ 2>&1>/dev/null; exit 0" INT TERM EXIT
+    if [[ $# -lt 2 ]]; then
+      exit 0
+    fi
 		COUNTDOWN=${1}
 		MESSAGE=${2}
 		((CURSOR_POSITION=${#MESSAGE} + 11))
