@@ -67,7 +67,7 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
 			tput rc
 			sleep 1
 		done &
-		read -t 5 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
+		read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
 	}
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
   read_prompt 5 "Check for Homebrew updates?"
