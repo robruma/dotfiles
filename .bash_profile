@@ -52,27 +52,27 @@ if [[ -f /usr/libexec/java_home ]]; then
 fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
-	read_prompt() {
+  read_prompt() {
     trap true INT TERM EXIT
     if [[ $# -lt 2 ]]; then
       exit 0
     fi
-		COUNTDOWN=${1}
-		MESSAGE=${2}
-		((CURSOR_POSITION=${#MESSAGE} + 11))
-		while [[ $COUNTDOWN -ge 0 ]]
-		do
-			tput hpa $CURSOR_POSITION
-			tput sc
-			tput cub 80
-			tput el
-			echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
-			((COUNTDOWN=${COUNTDOWN} - 1))
-			tput rc
-			sleep 1
-		done &
-		read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
-	}
+    COUNTDOWN=${1}
+    MESSAGE=${2}
+    ((CURSOR_POSITION=${#MESSAGE} + 11))
+    while [[ $COUNTDOWN -ge 0 ]]
+    do
+      tput hpa $CURSOR_POSITION
+      tput sc
+      tput cub 80
+      tput el
+      echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
+      ((COUNTDOWN=${COUNTDOWN} - 1))
+      tput rc
+      sleep 1
+    done &
+    read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
+  }
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
   read_prompt 5 "Check for Homebrew updates?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -81,13 +81,16 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
     BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
     if [[ -n $BREW_OUTDATED ]]; then
       echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n"
-      read_prompt 5 "Update Homebrew?"
+      read_prompt 5 "Upgrade outdated Homebrew?"
       if [[ $REPLY =~ ^[Yy]$ ]]; then
         unset REPLY
+        echo -e "\nUpgrading outdated Homebrew packages"
         /usr/local/bin/brew upgrade
       else
-        echo -e "\nRun 'brew upgrade' to update outdated packages"
+        echo -e "\nRun 'brew upgrade' to upgrade outdated packages"
       fi
+    else
+      echo "No Homebrew packages are outdated"
     fi
   else
     echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check then 'brew upgrade' if necessary"
