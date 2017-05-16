@@ -82,7 +82,7 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
 					tput sc
 					tput cub 80
 					tput el
-					echo -n $2 ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
+					echo -ne $2 ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
 					tput rc
 					sleep 0.1
 				done 
@@ -104,15 +104,15 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
   read_prompt 5 "Check for Homebrew updates?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     unset REPLY
-    spinner start "Checking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
+    spinner start "\nChecking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
 		spinner stop $? $!
     if [[ -n $BREW_OUTDATED ]]; then
       echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n"
       read_prompt 5 "Upgrade outdated Homebrew packages?"
       if [[ $REPLY =~ ^[Yy]$ ]]; then
         unset REPLY
-        spinner start "Upgrading outdated Homebrew packages" & /usr/local/bin/brew upgrade
-        spinner stop $? $!
+        echo -e "\nUpgrading outdated Homebrew packages"
+        /usr/local/bin/brew upgrade
       else
         echo -e "\nRun 'brew upgrade' to upgrade outdated packages"
       fi
