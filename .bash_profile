@@ -1,11 +1,14 @@
+# Source ~/.profile
 if [[ -s ~/.profile ]]; then
   . ~/.profile
 fi
 
+# Source ~/.bashrc
 if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
+# Git Propmt settings
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
 
@@ -33,33 +36,42 @@ fi
 # GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
 GIT_PROMPT_THEME=Chmike
 
+# Source ~/.bash-git-prompt/gitprompt.sh
 if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
-if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:=true} =~ ^true$ ]]; then
+if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:-true} =~ ^true$ ]]; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
 else
   echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
 fi
 
+# Homebrew bash completion settings
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
 export SUDO_PS1='\h:\W \u\$ '
 
+# Homebrew JAVA_HOME settings
 if [[ -f /usr/libexec/java_home ]]; then
   export JAVA_HOME=$(/usr/libexec/java_home)
 fi
 
+# Homebrew getopt settings
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
+fi
+
+# Keep Homebrew packages updated
+if [[ -x /usr/local/bin/brew ]]; then
   # Present user with the abilty to automatically update and upgrade outdated Homebrew packages
   # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
-  if [[ ${HOMEBREW_UPDATE_CHECK:=true} =~ ^true$ ]]; then
+  if [[ ${HOMEBREW_UPDATE_CHECK:-true} =~ ^true$ ]]; then
+    # Adds a countdown feature to the read timeout
     read_prompt() {
       trap true INT TERM EXIT
       if [[ $# -lt 2 ]]; then
@@ -80,6 +92,8 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
       done &
       read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
     }
+
+    # Spinner for long running processes with return value check
     spinner() {
       trap true INT TERM EXIT
       case $1 in
@@ -113,6 +127,8 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
           ;;
       esac
     }
+
+    # Homebrew update logic
     read_prompt 5 "Check for Homebrew updates?"
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
@@ -146,6 +162,7 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
   fi
 fi
 
+# Source ~/.alias
 if [[ -f ~/.alias ]]; then
   . ~/.alias
 fi
