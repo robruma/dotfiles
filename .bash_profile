@@ -53,7 +53,7 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
-  if [[ ${HOMEBREW_UPDATE_CHECK:-true} ]]; then
+  if [[ ${HOMEBREW_UPDATE_CHECK:-true} -eq true ]]; then
     read_prompt() {
       trap true INT TERM EXIT
       if [[ $# -lt 2 ]]; then
