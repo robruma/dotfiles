@@ -77,24 +77,26 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
 		case $1 in
 			start)
 				SPINNER_CHARS='\|/-'
-        MESSAGE=${2}
+        SPINNER_MESSAGE=${2}
+        tput cud1
 				while true
 				do
-          tput cud1
-					tput hpa $((${#MESSAGE} + 2))
+					tput hpa $((${#SPINNER_MESSAGE} + 2))
 					tput sc
 					tput cub 80
 					tput el
-					echo -n $MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
+					echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
 					tput rc
 					sleep 0.1
 				done 
 				;;
 			stop)
-				kill -9 $3; wait $! 2>/dev/null
+        SPINNER_RV=${2}
+        SPINNER_PID=${3}
+				kill -9 $SPINNER_PID; wait $! 2>/dev/null
 				echo -n $(tput kbs)
 				echo -n [
-				if [[ $2 -eq 0 ]]; then
+				if [[ $SPINNER_RV -eq 0 ]]; then
 					echo -n $(tput setaf 2)OK$(tput sgr0)
 				else
 					echo -n $(tput setaf 1)FAIL$(tput sgr0)
