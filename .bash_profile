@@ -72,45 +72,45 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
     done &
     read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
   }
-	spinner() {
+  spinner() {
     trap true INT TERM EXIT
-		case $1 in
-			start)
-				SPINNER_CHARS='\|/-'
+    case $1 in
+      start)
+        SPINNER_CHARS='\|/-'
         SPINNER_MESSAGE=${2}
         tput cud1
-				while true
-				do
-					tput hpa $((${#SPINNER_MESSAGE} + 2))
-					tput sc
-					tput cub 80
-					tput el
-					echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
-					tput rc
-					sleep 0.1
-				done 
-				;;
-			stop)
+        while true
+        do
+          tput hpa $((${#SPINNER_MESSAGE} + 2))
+          tput sc
+          tput cub 80
+          tput el
+          echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
+          tput rc
+          sleep 0.1
+        done
+        ;;
+      stop)
         SPINNER_RV=${2}
         SPINNER_PID=${3}
-				kill -9 $SPINNER_PID; wait $! 2>/dev/null
-				echo -n $(tput kbs)
-				echo -n [
-				if [[ $SPINNER_RV -eq 0 ]]; then
-					echo -n $(tput setaf 2)OK$(tput sgr0)
-				else
-					echo -n $(tput setaf 1)FAIL$(tput sgr0)
-				fi
-				echo ]
-				;;
-		esac
-	}
+        kill -9 $SPINNER_PID; wait $! 2>/dev/null
+        echo -n $(tput kbs)
+        echo -n [
+        if [[ $SPINNER_RV -eq 0 ]]; then
+          echo -n $(tput setaf 2)OK$(tput sgr0)
+        else
+          echo -n $(tput setaf 1)FAIL$(tput sgr0)
+        fi
+        echo ]
+        ;;
+    esac
+  }
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
   read_prompt 5 "Check for Homebrew updates?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     unset REPLY
     spinner start "Checking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
-		spinner stop $? $!
+    spinner stop $? $!
     if [[ -n $BREW_OUTDATED ]]; then
       echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n"
       read_prompt 5 "Upgrade outdated Homebrew packages?"
