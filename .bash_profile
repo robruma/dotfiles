@@ -80,6 +80,7 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
         MESSAGE=${2}
 				while true
 				do
+          tput cud1
 					tput hpa $((${#MESSAGE} + 2))
 					tput sc
 					tput cub 80
@@ -106,7 +107,6 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
   read_prompt 5 "Check for Homebrew updates?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     unset REPLY
-    echo
     spinner start "Checking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
 		spinner stop $? $!
     if [[ -n $BREW_OUTDATED ]]; then
