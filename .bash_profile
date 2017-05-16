@@ -52,80 +52,84 @@ if [[ -f /usr/libexec/java_home ]]; then
 fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
-  read_prompt() {
-    trap true INT TERM EXIT
-    if [[ $# -lt 2 ]]; then
-      exit 0
-    fi
-    COUNTDOWN=${1}
-    MESSAGE=${2}
-    while [[ $COUNTDOWN -ge 0 ]]
-    do
-      tput hpa $((${#MESSAGE} + 11))
-      tput sc
-      tput cub 80
-      tput el
-      echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
-      ((COUNTDOWN=${COUNTDOWN} - 1))
-      tput rc
-      sleep 1
-    done &
-    read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
-  }
-  spinner() {
-    trap true INT TERM EXIT
-    case $1 in
-      start)
-        SPINNER_CHARS='\|/-'
-        SPINNER_MESSAGE=${2}
-        tput cud1
-        while true
-        do
-          tput hpa $((${#SPINNER_MESSAGE} + 2))
-          tput sc
-          tput cub 80
-          tput el
-          echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
-          tput rc
-          sleep 0.1
-        done
-        ;;
-      stop)
-        SPINNER_RV=${2}
-        SPINNER_PID=${3}
-        kill -9 $SPINNER_PID; wait $! 2>/dev/null
-        echo -n $(tput kbs)
-        echo -n [
-        if [[ $SPINNER_RV -eq 0 ]]; then
-          echo -n $(tput setaf 2)OK$(tput sgr0)
-        else
-          echo -n $(tput setaf 1)FAIL$(tput sgr0)
-        fi
-        echo ]
-        ;;
-    esac
-  }
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
-  read_prompt 5 "Check for Homebrew updates?"
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    unset REPLY
-    spinner start "Checking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
-    spinner stop $? $!
-    if [[ -n $BREW_OUTDATED ]]; then
-      echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n"
-      read_prompt 5 "Upgrade outdated Homebrew packages?"
-      if [[ $REPLY =~ ^[Yy]$ ]]; then
-        unset REPLY
-        echo -e "\nUpgrading outdated Homebrew packages"
-        /usr/local/bin/brew upgrade
+  if [[ ${HOMEBREW_UPDATE_CHECK:-true} ]]; then
+    read_prompt() {
+      trap true INT TERM EXIT
+      if [[ $# -lt 2 ]]; then
+        exit 0
+      fi
+      COUNTDOWN=${1}
+      MESSAGE=${2}
+      while [[ $COUNTDOWN -ge 0 ]]
+      do
+        tput hpa $((${#MESSAGE} + 11))
+        tput sc
+        tput cub 80
+        tput el
+        echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
+        ((COUNTDOWN=${COUNTDOWN} - 1))
+        tput rc
+        sleep 1
+      done &
+      read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
+    }
+    spinner() {
+      trap true INT TERM EXIT
+      case $1 in
+        start)
+          SPINNER_CHARS='\|/-'
+          SPINNER_MESSAGE=${2}
+          tput cud1
+          while true
+          do
+            tput hpa $((${#SPINNER_MESSAGE} + 2))
+            tput sc
+            tput cub 80
+            tput el
+            echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
+            tput rc
+            sleep 0.1
+          done
+          ;;
+        stop)
+          SPINNER_RV=${2}
+          SPINNER_PID=${3}
+          kill -9 $SPINNER_PID; wait $! 2>/dev/null
+          echo -n $(tput kbs)
+          echo -n [
+          if [[ $SPINNER_RV -eq 0 ]]; then
+            echo -n $(tput setaf 2)OK$(tput sgr0)
+          else
+            echo -n $(tput setaf 1)FAIL$(tput sgr0)
+          fi
+          echo ]
+          ;;
+      esac
+    }
+    read_prompt 5 "Check for Homebrew updates?"
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      unset REPLY
+      spinner start "Checking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
+      spinner stop $? $!
+      if [[ -n $BREW_OUTDATED ]]; then
+        echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n"
+        read_prompt 5 "Upgrade outdated Homebrew packages?"
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+          unset REPLY
+          echo -e "\nUpgrading outdated Homebrew packages"
+          /usr/local/bin/brew upgrade
+        else
+          echo -e "\nSkipping Homebrew outdated package upgrade\nRun 'brew upgrade' to upgrade outdated packages"
+        fi
       else
-        echo -e "\nRun 'brew upgrade' to upgrade outdated packages"
+        echo "No Homebrew packages are outdated"
       fi
     else
-      echo "No Homebrew packages are outdated"
+      echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check then 'brew upgrade' if necessary"
     fi
   else
-    echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check then 'brew upgrade' if necessary"
+    echo "Homebrew update check disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
   fi
 fi
 
