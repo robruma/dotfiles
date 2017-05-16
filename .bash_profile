@@ -37,6 +37,8 @@ if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
+# Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
+# Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
 if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:=true} =~ ^true$ ]]; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
 else
@@ -55,6 +57,8 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
+  # Present user with the abilty to automatically update and upgrade outdated Homebrew packages
+  # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
   if [[ ${HOMEBREW_UPDATE_CHECK:=true} =~ ^true$ ]]; then
     read_prompt() {
       trap true INT TERM EXIT
@@ -112,18 +116,25 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
     read_prompt 5 "Check for Homebrew updates?"
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
-      spinner start "Checking for Homebrew updates" & BREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
-      spinner stop $? $!
-      if [[ -n $BREW_OUTDATED ]]; then
-        echo -e "The following Homebrew packages are outdated:\n\n${BREW_OUTDATED}\n"
+      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
+      HOMEBREW_OUTDATED_RV=$?
+      spinner stop $HOMEBREW_OUTDATED_RV $!
+      if [[ -n $HOMEBREW_OUTDATED ]]; then
+        echo -e "The following Homebrew packages are outdated:\n\n${HOMEBREW_OUTDATED}\n"
         read_prompt 5 "Upgrade outdated Homebrew packages?"
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           unset REPLY
           echo -e "\nUpgrading outdated Homebrew packages"
           /usr/local/bin/brew upgrade
+          HOMEBREW_UPGRADE_RV=$?
+          if [[ $HOMEBREW_UPGRADE_RV != 0 ]]; then
+            echo "$(tput setaf 1)Homebrew outdated package upgrade failed$(tput sgr0)"
+          fi
         else
           echo -e "\nSkipping Homebrew outdated package upgrade\nRun 'brew upgrade' to upgrade outdated packages"
         fi
+      elif [[ $HOMEBREW_OUTDATED_RV != 0 ]]; then
+        echo "$(tput setaf 1)Homebrew update check failed$(tput sgr0)"
       else
         echo "No Homebrew packages are outdated"
       fi
