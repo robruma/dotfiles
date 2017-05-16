@@ -6,6 +6,9 @@ if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
+echo "huc = $HOMEBREW_UPDATE_CHECK"
+echo "duc = $UPDATE_DOTFILES"
+
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
 
@@ -37,7 +40,7 @@ if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
-if [[ -x ~/.update_dotfiles.sh ]]; then
+if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:=true} -eq true ]]; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
 fi
 
