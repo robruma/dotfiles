@@ -8,7 +8,7 @@ if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
-# Git Propmt settings
+# Git Prompt settings
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
 
