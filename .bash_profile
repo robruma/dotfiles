@@ -6,9 +6,6 @@ if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
-echo "huc = $HOMEBREW_UPDATE_CHECK"
-echo "duc = $UPDATE_DOTFILES"
-
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
 
@@ -40,8 +37,10 @@ if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
-if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:=true} -eq true ]]; then
+if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:=true} =~ ^true$ ]]; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
+else
+  echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
 fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
@@ -56,7 +55,7 @@ fi
 
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
-  if [[ ${HOMEBREW_UPDATE_CHECK:=true} -eq true ]]; then
+  if [[ ${HOMEBREW_UPDATE_CHECK:=true} =~ ^true$ ]]; then
     read_prompt() {
       trap true INT TERM EXIT
       if [[ $# -lt 2 ]]; then
@@ -132,7 +131,7 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
       echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check then 'brew upgrade' if necessary"
     fi
   else
-    echo "Homebrew update check disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
+    echo "Homebrew update check is disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
   fi
 fi
 
