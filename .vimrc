@@ -51,6 +51,7 @@ if has("autocmd")
   autocmd FileType java setlocal shiftwidth=4
   autocmd FileType java setlocal softtabstop=4
   autocmd FileType java setlocal tabstop=4
+  autocmd BufReadPost Jenkinsfile set syntax=groovy
 endif
 nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
