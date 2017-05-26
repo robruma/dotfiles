@@ -78,3 +78,7 @@
   path = .vim/bundle/vim-javacomplete2
   url = https://github.com/artur-shaik/vim-javacomplete2.git
   branch = master
+[submodule ".vim/bundle/groovy"]
+  path = .vim/bundle/groovy
+  url = https://github.com/vim-scripts/groovy.vim.git
+  branch = master

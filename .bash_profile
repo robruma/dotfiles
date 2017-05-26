@@ -86,7 +86,7 @@ if [[ -x /usr/local/bin/brew ]]; then
         tput cub 80
         tput el
         echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
-        ((COUNTDOWN=${COUNTDOWN} - 1))
+        ((COUNTDOWN--))
         tput rc
         sleep 1
       done &
@@ -129,7 +129,8 @@ if [[ -x /usr/local/bin/brew ]]; then
     }
 
     # Homebrew update logic
-    read_prompt 5 "Check for Homebrew updates?"
+    # Override read timeout by setting the environment variable HOMEBREW_UPDATE_TIMEOUT=N in ~/.profile
+    read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Check for Homebrew updates?"
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
       spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
@@ -137,7 +138,7 @@ if [[ -x /usr/local/bin/brew ]]; then
       spinner stop $HOMEBREW_OUTDATED_RV $!
       if [[ -n $HOMEBREW_OUTDATED ]]; then
         echo -e "The following Homebrew packages are outdated:\n\n${HOMEBREW_OUTDATED}\n"
-        read_prompt 5 "Upgrade outdated Homebrew packages?"
+        read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Upgrade outdated Homebrew packages?"
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           unset REPLY
           echo -e "\nUpgrading outdated Homebrew packages"
