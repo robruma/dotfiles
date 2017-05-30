@@ -43,7 +43,7 @@ fi
 
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
-if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:-true} =~ ^true$ ]]; then
+if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true}; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
 else
   echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
@@ -70,7 +70,7 @@ fi
 if [[ -x /usr/local/bin/brew ]]; then
   # Present user with the abilty to automatically update and upgrade outdated Homebrew packages
   # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
-  if [[ ${HOMEBREW_UPDATE_CHECK:-true} =~ ^true$ ]]; then
+  if ${HOMEBREW_UPDATE_CHECK:-true}; then
     # Adds a countdown feature to the read timeout
     read_prompt() {
       trap true INT TERM EXIT
