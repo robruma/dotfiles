@@ -9,13 +9,11 @@ if [[ -s ~/.bashrc ]]; then
 fi
 
 # Add SSH keys to agent
-if [[ $- =~ i ]] && $(which ssh-add > /dev/null 2>&1); then
-  if [[ $(uname -s) != Darwin ]]; then
-    if [[ -z $(ps -u $USER | awk '$NF == "ssh-agent" {print $1}') ]] && ! ssh-add > /dev/null 2>&1; then
-      eval $(ssh-agent -s) > /dev/null 2>&1;
-      trap "kill $SSH_AGENT_PID" EXIT
-      ssh-add
-    fi
+if [[ $- =~ i ]] && [[ -x $(which ssh-add) ]]; then
+  if [[ $(uname -s) != Darwin ]] && [[ ! -S $SSH_AUTH_SOCK ]]; then
+    eval $(ssh-agent -s) > /dev/null 2>&1;
+    trap "kill $SSH_AGENT_PID" EXIT
+    ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
   else
     ssh-add -A 2>/dev/null
   fi
