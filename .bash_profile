@@ -11,9 +11,9 @@ fi
 # Add SSH keys to agent
 if [[ $- =~ i ]] && $(which ssh-add > /dev/null 2>&1); then
   if [[ $(uname -s) != Darwin ]]; then
-    if ! ssh-add > /dev/null 2>&1; then
+    if [[ -z $(ps -u $USER | awk '$NF == "ssh-agent" {print $1}') ]] && ! ssh-add > /dev/null 2>&1; then
       eval $(ssh-agent -s) > /dev/null 2>&1;
-      trap "kill $SSH_AGENT_PID" 0
+      trap "kill $SSH_AGENT_PID" EXIT
       ssh-add
     fi
   else
