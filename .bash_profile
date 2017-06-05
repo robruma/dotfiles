@@ -8,6 +8,18 @@ if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
+# Add SSH keys to agent
+if [[ $- =~ i ]] && $(which ssh-add > /dev/null 2>&1); then
+  if [[ $(uname -s) != Darwin ]]; then
+    if ! ssh-add > /dev/null 2>&1; then
+      eval $(ssh-agent -s) > /dev/null 2>&1;
+      ssh-add
+    fi
+  else
+    ssh-add -A 2>/dev/null
+  fi
+fi
+
 # Git Prompt settings
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
@@ -18,7 +30,7 @@ GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
 # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
-if [[ $(which git > /dev/null 2>&1) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
+if $(which git > /dev/null 2>&1) && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
   GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh
 fi
 
