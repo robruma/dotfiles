@@ -10,9 +10,9 @@ fi
 
 # Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
 if [[ $- =~ i ]] && [[ -x $(which ssh-add) ]]; then
+  eval $(ssh-agent -s) > /dev/null 2>&1;
+  trap "kill $SSH_AGENT_PID" EXIT
   if [[ $(uname -s) != Darwin ]] && [[ ! -S $SSH_AUTH_SOCK ]]; then
-    eval $(ssh-agent -s) > /dev/null 2>&1;
-    trap "kill $SSH_AGENT_PID" EXIT
     ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
   else
     ssh-add -A 2>/dev/null
