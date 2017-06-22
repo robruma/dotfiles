@@ -38,7 +38,6 @@ let g:go_highlight_operators=1
 let g:go_highlight_build_constraints=1
 "let g:syntastic_puppet_puppetlint_args='--fix'
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'puppet'], 'passive_filetypes': [] }
-let g:netrw_dirhistmax=0
 hi Search cterm=NONE ctermfg=grey ctermbg=red
 map <C-t> :Tab block<CR>
 map <C-n> :NERDTreeToggle<CR>
