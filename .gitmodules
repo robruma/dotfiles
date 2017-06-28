@@ -82,3 +82,7 @@
   path = .vim/bundle/groovy
   url = https://github.com/vim-scripts/groovy.vim.git
   branch = master
+[submodule ".vim/bundle/vim-markdown"]
+  path = .vim/bundle/vim-markdown
+  url = https://github.com/plasticboy/vim-markdown.git
+  branch = master
