@@ -4,7 +4,6 @@
 !.bash-git-rc
 !.bash_profile
 !.Brewfile
-!.gitconfig
 !.gitignore
 !.gitmodules
 !.vimrc

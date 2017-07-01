@@ -19,6 +19,11 @@ if [[ $- =~ i ]] && [[ -x $(which ssh-add) ]]; then
   fi
 fi
 
+# Global git settings
+# Override by setting the environment variables GIT_NAME and GIT_EMAIL
+git config --global user.name "${GIT_NAME:-User}"
+git config --global user.email "${GIT_EMAIL:-user@localhost}"
+
 # Git Prompt settings
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
