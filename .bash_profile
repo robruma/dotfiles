@@ -8,6 +8,17 @@ if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
+# Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
+if [[ $- =~ i ]] && [[ -x $(which ssh-add) ]]; then
+  eval $(ssh-agent -s) > /dev/null 2>&1;
+  trap "kill $SSH_AGENT_PID" EXIT
+  if [[ $(uname -s) != Darwin ]] && [[ ! -S $SSH_AUTH_SOCK ]]; then
+    ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
+  else
+    ssh-add -A 2>/dev/null
+  fi
+fi
+
 # Git Prompt settings
 # Set config variables first
 # GIT_PROMPT_ONLY_IN_REPO=1
@@ -18,7 +29,7 @@ GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
 # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
-if [[ $(which git > /dev/null 2>&1) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
+if $(which git > /dev/null 2>&1) && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
   GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh
 fi
 
@@ -43,7 +54,7 @@ fi
 
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
-if [[ -x ~/.update_dotfiles.sh ]] && [[ ${UPDATE_DOTFILES:-true} =~ ^true$ ]]; then
+if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
   ~/.update_dotfiles.sh > /dev/null 2>&1
 else
   echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
@@ -70,7 +81,7 @@ fi
 if [[ -x /usr/local/bin/brew ]]; then
   # Present user with the abilty to automatically update and upgrade outdated Homebrew packages
   # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
-  if [[ ${HOMEBREW_UPDATE_CHECK:-true} =~ ^true$ ]]; then
+  if ${HOMEBREW_UPDATE_CHECK:-true} > /dev/null 2>&1; then
     # Adds a countdown feature to the read timeout
     read_prompt() {
       trap true INT TERM EXIT
