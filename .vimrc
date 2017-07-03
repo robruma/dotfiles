@@ -7,6 +7,7 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set backspace=indent,eol,start
+set spell spelllang=en_us
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 call pathogen#helptags()
