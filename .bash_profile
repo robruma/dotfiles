@@ -1,6 +1,4 @@
 # Set user configurable environment variables in .profile
-#
-# Source ~/.profile
 if [[ -s ~/.profile ]]; then
   . ~/.profile
 fi
