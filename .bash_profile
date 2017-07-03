@@ -14,7 +14,7 @@ fi
 if [[ $- =~ i ]] && [[ -x $(which ssh-add) ]]; then
   eval $(ssh-agent -s) > /dev/null 2>&1;
   trap "kill $SSH_AGENT_PID" EXIT
-  if [[ $(uname -s) != Darwin ]] && [[ ! -S $SSH_AUTH_SOCK ]]; then
+  if [[ $(uname -s) != Darwin ]] && [[ -S $SSH_AUTH_SOCK ]]; then
     ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
   else
     ssh-add -A 2>/dev/null
