@@ -1,3 +1,5 @@
+# Set user configurable environment variables in either of the following files
+#
 # Source ~/.profile
 if [[ -s ~/.profile ]]; then
   . ~/.profile
@@ -21,8 +23,8 @@ fi
 
 # Global git settings
 # Override by setting the environment variables GIT_NAME and GIT_EMAIL
-git config --global user.name "${GIT_NAME:-User}"
-git config --global user.email "${GIT_EMAIL:-user@localhost}"
+git config --global user.name "${GIT_NAME:-Anonymous}"
+git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
 
 # Git Prompt settings
 # Set config variables first
