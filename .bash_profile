@@ -163,6 +163,16 @@ if [[ -x /usr/local/bin/brew ]]; then
           if [[ $HOMEBREW_UPGRADE_RV != 0 ]]; then
             echo "$(tput setaf 1)Homebrew outdated package upgrade failed$(tput sgr0)"
           fi
+          # Keep bundles installed
+          echo -e "\nChecking if bundled Homebrew packages are installed"
+          /usr/local/bin/brew bundle check --global
+          HOMEBREW_BUNDLED_RV=$?
+          if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
+            echo -e "\nEnsure Homebrew bundle tap is installed"
+            /usr/local/bin/brew tap homebrew/bundle
+            echo -e "\nInstalling Homebrew bundles"
+            /usr/local/bin/brew bundle --global
+          fi
         else
           echo -e "\nSkipping Homebrew outdated package upgrade\nRun 'brew upgrade' to upgrade outdated packages"
         fi
