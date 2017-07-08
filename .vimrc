@@ -55,7 +55,6 @@ if has("autocmd")
   autocmd FileType java setlocal softtabstop=4
   autocmd FileType java setlocal tabstop=4
   autocmd BufReadPost Jenkinsfile set syntax=groovy
-  autocmd BufEnter * call DoWordComplete()
 endif
 nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
 imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
