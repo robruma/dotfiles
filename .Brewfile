@@ -1,7 +1,6 @@
 # brew bundle --global
 tap 'caskroom/cask'
 tap 'homebrew/boneyard'
-tap 'homebrew/bundle'
 tap 'homebrew/completions'
 tap 'homebrew/core'
 tap 'homebrew/dupes'

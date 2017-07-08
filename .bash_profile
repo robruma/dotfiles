@@ -146,13 +146,13 @@ if [[ -x /usr/local/bin/brew ]]; then
 
     # Homebrew update logic
     # Ensure Homebrew bundles are installed
-    echo -e "\nChecking if bundled Homebrew packages are installed"
+    echo -e "Checking if bundled Homebrew packages are installed"
     /usr/local/bin/brew bundle check --global
     HOMEBREW_BUNDLED_RV=$?
     if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
-      echo -e "\nEnsure Homebrew bundle tap is installed"
+      echo -e "Ensure Homebrew bundle tap is installed"
       /usr/local/bin/brew tap homebrew/bundle
-      echo -e "\nInstalling Homebrew bundles"
+      echo -e "Installing Homebrew bundles"
       /usr/local/bin/brew bundle --global
     fi
     # Override read timeout by setting the environment variable HOMEBREW_UPDATE_TIMEOUT=N in ~/.profile
