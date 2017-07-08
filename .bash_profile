@@ -150,13 +150,13 @@ if [[ -x /usr/local/bin/brew ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
       # Ensure Homebrew bundles are installed
-      echo -e "Checking if bundled Homebrew packages are installed"
+      echo -e "\nChecking if bundled Homebrew packages are installed"
       /usr/local/bin/brew bundle check --global
       HOMEBREW_BUNDLED_RV=$?
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
-        echo -e "Ensure Homebrew bundle tap is installed"
+        echo "Ensure Homebrew bundle tap is installed"
         /usr/local/bin/brew tap homebrew/bundle
-        echo -e "Installing Homebrew bundles"
+        echo "Installing Homebrew bundles"
         /usr/local/bin/brew bundle --global
       fi
       spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
