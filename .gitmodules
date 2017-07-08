@@ -86,7 +86,3 @@
   path = .vim/bundle/vim-markdown
   url = https://github.com/plasticboy/vim-markdown.git
   branch = master
-[submodule ".vim/bundle/word_complete"]
-  path = .vim/bundle/word_complete
-  url = https://github.com/vim-scripts/word_complete.vim.git
-  branch = master
