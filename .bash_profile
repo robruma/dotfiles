@@ -65,6 +65,11 @@ else
   echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
 fi
 
+# Install Homebrew
+if [[ $(uname -s) == Darwin ]] && [[ ! -x /usr/local/bin/brew ]]; then
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
 # Homebrew bash completion settings
 if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
   . $(brew --prefix)/etc/bash_completion
