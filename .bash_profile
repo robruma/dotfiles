@@ -155,15 +155,23 @@ if [[ -x /usr/local/bin/brew ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
       # Ensure Homebrew bundles are installed
-      spinner start "Checking Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global)
+      spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global)
       HOMEBREW_BUNDLED_RV=$?
       spinner stop $HOMEBREW_BUNDLED_RV $!
       echo $HOMEBREW_BUNDLED
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
-        echo "Ensure Homebrew bundle tap is installed"
-        /usr/local/bin/brew tap homebrew/bundle
-        echo "Installing Homebrew bundles"
-        /usr/local/bin/brew bundle --global
+        spinner start "Ensuring Homebrew bundle tap is installed" & HOMEBREW_BUNDLE_TAP=$(/usr/local/bin/brew tap homebrew/bundle)
+        HOMEBREW_BUNDLE_TAP_RV=$?
+        spinner stop $HOMEBREW_BUNDLE_TAP_RV $!
+        echo $HOMEBREW_BUNDLE_TAP
+        read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Install Homebrew bundles?"
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+          unset REPLY
+          echo -e "\nInstalling Homebrew bundles"
+          /usr/local/bin/brew bundle --global
+        else
+          echo -e "\nSkipping Homebrew bundle install\nRun 'brew bundle --global' to install bundles manually"
+        fi
       fi
       spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
       HOMEBREW_OUTDATED_RV=$?
@@ -180,7 +188,7 @@ if [[ -x /usr/local/bin/brew ]]; then
             echo "$(tput setaf 1)Homebrew outdated package upgrade failed$(tput sgr0)"
           fi
         else
-          echo -e "\nSkipping Homebrew outdated package upgrade\nRun 'brew upgrade' to upgrade outdated packages"
+          echo -e "\nSkipping Homebrew outdated package upgrade\nRun 'brew upgrade' to upgrade outdated packages manually"
         fi
       elif [[ $HOMEBREW_OUTDATED_RV != 0 ]]; then
         echo "$(tput setaf 1)Homebrew update check failed$(tput sgr0)"
@@ -188,7 +196,7 @@ if [[ -x /usr/local/bin/brew ]]; then
         echo "No Homebrew packages are outdated"
       fi
     else
-      echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check then 'brew upgrade' if necessary"
+      echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check manually then 'brew upgrade' if necessary"
     fi
   else
     echo "Homebrew update check is disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
