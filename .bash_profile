@@ -155,9 +155,10 @@ if [[ -x /usr/local/bin/brew ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
       # Ensure Homebrew bundles are installed
-      echo -e "\nChecking if bundled Homebrew packages are installed"
-      /usr/local/bin/brew bundle check --global
+      spinner start "Checking Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global)
       HOMEBREW_BUNDLED_RV=$?
+      spinner stop $HOMEBREW_BUNDLED_RV $!
+      echo $HOMEBREW_BUNDLED
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
         echo "Ensure Homebrew bundle tap is installed"
         /usr/local/bin/brew tap homebrew/bundle
