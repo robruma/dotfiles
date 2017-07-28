@@ -158,7 +158,7 @@ if [[ -x /usr/local/bin/brew ]]; then
       spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global)
       HOMEBREW_BUNDLED_RV=$?
       spinner stop $HOMEBREW_BUNDLED_RV $!
-      echo $HOMEBREW_BUNDLED
+      echo -e $HOMEBREW_BUNDLED
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
         spinner start "Ensuring Homebrew bundle tap is installed" & HOMEBREW_BUNDLE_TAP=$(/usr/local/bin/brew tap homebrew/bundle)
         HOMEBREW_BUNDLE_TAP_RV=$?
