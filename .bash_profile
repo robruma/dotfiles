@@ -155,7 +155,7 @@ if [[ -x /usr/local/bin/brew ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
       # Ensure Homebrew bundles are installed
-      spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global)
+      spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global --no-upgrade)
       HOMEBREW_BUNDLED_RV=$?
       spinner stop $HOMEBREW_BUNDLED_RV $!
       echo -e $HOMEBREW_BUNDLED
@@ -167,7 +167,7 @@ if [[ -x /usr/local/bin/brew ]]; then
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           unset REPLY
           echo -e "\nInstalling Homebrew bundles"
-          /usr/local/bin/brew bundle --global
+          /usr/local/bin/brew bundle --global --no-upgrade
         else
           echo -e "\nSkipping Homebrew bundle install\nRun 'brew bundle --global' to install bundles manually"
         fi
