@@ -1,4 +1,8 @@
-# Set user configurable environment variables in .profile
+# Add go library to path
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+
+# Source ~/.profile
+# Set user configurable environment variables here
 if [[ -s ~/.profile ]]; then
   . ~/.profile
 fi
@@ -6,6 +10,11 @@ fi
 # Source ~/.bashrc
 if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
+fi
+
+# Source ~/.alias
+if [[ -f ~/.alias ]]; then
+  . ~/.alias
 fi
 
 # Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
@@ -21,8 +30,10 @@ fi
 
 # Global git settings
 # Override by setting the environment variables GIT_NAME and GIT_EMAIL
-git config --global user.name "${GIT_NAME:-Anonymous}"
-git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
+if [[ -x $(which git) ]]; then
+  git config --global user.name "${GIT_NAME:-Anonymous}"
+  git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
+fi
 
 # Git Prompt settings
 # Set config variables first
@@ -34,7 +45,7 @@ GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
 # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
-if $(which git > /dev/null 2>&1) && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
+if [[ -x $(which git) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
   GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh
 fi
 
@@ -201,10 +212,3 @@ if [[ -x /usr/local/bin/brew ]]; then
     echo "Homebrew update check is disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
   fi
 fi
-
-# Source ~/.alias
-if [[ -f ~/.alias ]]; then
-  . ~/.alias
-fi
-
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
