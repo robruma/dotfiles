@@ -130,8 +130,13 @@ fi
 # Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
 if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
   read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
-  spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
-  spinner stop $? $!
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    unset REPLY
+    spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
+    spinner stop $? $!
+  else
+    echo -e "\nSkipping dotfiles update\nRun '~/.update_dotfiles.sh' to update dotfiles manually"
+  fi
 else
   echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
 fi
