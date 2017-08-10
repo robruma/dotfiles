@@ -127,7 +127,9 @@ fi
 
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
+# Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
 if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
+  read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
   spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
   spinner stop $? $!
 else
