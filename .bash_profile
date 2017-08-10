@@ -1,6 +1,63 @@
 # Add go library to path
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 
+# Adds a countdown feature to the read timeout
+read_prompt() {
+  trap true INT TERM EXIT
+  if [[ $# -lt 2 ]]; then
+    exit 0
+  fi
+  COUNTDOWN=${1}
+  MESSAGE=${2}
+  while [[ $COUNTDOWN -ge 0 ]]
+  do
+    tput hpa $((${#MESSAGE} + 11))
+    tput sc
+    tput cub 80
+    tput el
+    echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
+    ((COUNTDOWN--))
+    tput rc
+    sleep 1
+  done &
+  read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
+}
+
+# Spinner for long running processes with return value check
+spinner() {
+  trap true INT TERM EXIT
+  case $1 in
+    start)
+      SPINNER_CHARS='\|/-'
+      SPINNER_MESSAGE=${2}
+      tput cud1
+      while true
+      do
+        tput hpa $((${#SPINNER_MESSAGE} + 2))
+        tput sc
+        tput cub 80
+        tput el
+        echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
+        tput rc
+        sleep 0.1
+      done
+      ;;
+    stop)
+      SPINNER_RV=${2}
+      SPINNER_PID=${3}
+      kill -9 $SPINNER_PID; wait $! 2>/dev/null
+      echo -n $(tput kbs)
+      echo -n [
+      if [[ $SPINNER_RV -eq 0 ]]; then
+        echo -n $(tput setaf 2)OK$(tput sgr0)
+      else
+        echo -n $(tput setaf 1)FAIL$(tput sgr0)
+      fi
+      echo ]
+      ;;
+  esac
+}
+
 # Source ~/.profile
 # Set user configurable environment variables here
 if [[ -s ~/.profile ]]; then
@@ -71,7 +128,8 @@ fi
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
 if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
-  ~/.update_dotfiles.sh > /dev/null 2>&1
+  spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
+  spinner stop $? $!
 else
   echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
 fi
@@ -103,63 +161,6 @@ if [[ -x /usr/local/bin/brew ]]; then
   # Present user with the abilty to automatically update and upgrade outdated Homebrew packages
   # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
   if ${HOMEBREW_UPDATE_CHECK:-true} > /dev/null 2>&1; then
-    # Adds a countdown feature to the read timeout
-    read_prompt() {
-      trap true INT TERM EXIT
-      if [[ $# -lt 2 ]]; then
-        exit 0
-      fi
-      COUNTDOWN=${1}
-      MESSAGE=${2}
-      while [[ $COUNTDOWN -ge 0 ]]
-      do
-        tput hpa $((${#MESSAGE} + 11))
-        tput sc
-        tput cub 80
-        tput el
-        echo -n $MESSAGE [y/n] [${COUNTDOWN}] >&2
-        ((COUNTDOWN--))
-        tput rc
-        sleep 1
-      done &
-      read -t $1 -n 1 -r; kill -9 $!; wait $! 2>/dev/null
-    }
-
-    # Spinner for long running processes with return value check
-    spinner() {
-      trap true INT TERM EXIT
-      case $1 in
-        start)
-          SPINNER_CHARS='\|/-'
-          SPINNER_MESSAGE=${2}
-          tput cud1
-          while true
-          do
-            tput hpa $((${#SPINNER_MESSAGE} + 2))
-            tput sc
-            tput cub 80
-            tput el
-            echo -n $SPINNER_MESSAGE ${SPINNER_CHARS:i++%${#SPINNER_CHARS}:1}
-            tput rc
-            sleep 0.1
-          done
-          ;;
-        stop)
-          SPINNER_RV=${2}
-          SPINNER_PID=${3}
-          kill -9 $SPINNER_PID; wait $! 2>/dev/null
-          echo -n $(tput kbs)
-          echo -n [
-          if [[ $SPINNER_RV -eq 0 ]]; then
-            echo -n $(tput setaf 2)OK$(tput sgr0)
-          else
-            echo -n $(tput setaf 1)FAIL$(tput sgr0)
-          fi
-          echo ]
-          ;;
-      esac
-    }
-
     # Homebrew update logic
     # Override read timeout by setting the environment variable HOMEBREW_UPDATE_TIMEOUT=N in ~/.profile
     read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Check for Homebrew updates?"
