@@ -179,9 +179,8 @@ if [[ -x /usr/local/bin/brew ]]; then
       spinner stop $HOMEBREW_BUNDLED_RV $!
       echo -e $HOMEBREW_BUNDLED
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
-        spinner start "Ensuring Homebrew bundle tap is installed" & /usr/local/bin/brew tap homebrew/bundle
-        HOMEBREW_BUNDLE_TAP_RV=$?
-        spinner stop $HOMEBREW_BUNDLE_TAP_RV $!
+        echo -e "Ensuring Homebrew bundle tap is installed"
+        /usr/local/bin/brew tap homebrew/bundle
         read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Install Homebrew bundles?"
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           unset REPLY
