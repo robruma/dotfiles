@@ -1,5 +1,5 @@
 # Add go library to path
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export GOPATH=/usr/local/opt/go/libexec/bin
 
 # Adds a countdown feature to the read timeout
 read_prompt() {
