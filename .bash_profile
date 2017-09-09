@@ -75,7 +75,7 @@ if [[ -f ~/.alias ]]; then
 fi
 
 # Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
-if [[ $- =~ i ]] && [[ -x $(which ssh-add) ]]; then
+if [[ $- =~ i ]] && [[ -x $(which ssh-add 2>/dev/null) ]]; then
   eval $(ssh-agent -s) > /dev/null 2>&1;
   trap "kill $SSH_AGENT_PID" EXIT
   if [[ $(uname -s) != Darwin ]] && [[ -S $SSH_AUTH_SOCK ]]; then
@@ -87,9 +87,11 @@ fi
 
 # Global git settings
 # Override by setting the environment variables GIT_NAME and GIT_EMAIL
-if [[ -x $(which git) ]]; then
+if [[ -x $(which git 2>/dev/null) ]]; then
   git config --global user.name "${GIT_NAME:-Anonymous}"
   git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
+else
+  echo -e "Warning: git not found in your path.\nFunctionality that uses git will be disabled"
 fi
 
 # Git Prompt settings
@@ -102,7 +104,7 @@ GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
 # GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
-if [[ -x $(which git) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
+if [[ -x $(which git 2>/dev/null) ]] && [[ $(uname -s) != Darwin ]] && [[ $(git --version | awk '{print $NF,"\n1.7.10"}' | sort -Vr | head -n1) == 1.7.10 ]]; then
   GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh
 fi
 
@@ -121,14 +123,14 @@ fi
 GIT_PROMPT_THEME=Chmike
 
 # Source ~/.bash-git-prompt/gitprompt.sh
-if [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
+if [[ -x $(which git 2>/dev/null) ]] && [[ -f ~/.bash-git-prompt/gitprompt.sh ]]; then
   . ~/.bash-git-prompt/gitprompt.sh
 fi
 
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
 # Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
-if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
+if [[ -x $(which git 2>/dev/null) ]] && [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
   read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     unset REPLY
