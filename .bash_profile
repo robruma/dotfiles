@@ -130,17 +130,19 @@ fi
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
 # Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
-if [[ -x $(which git 2>/dev/null) ]] && [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
-  read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    unset REPLY
-    spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
-    spinner stop $? $!
+if [[ -x $(which git 2>/dev/null) ]]; then
+  if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
+    read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      unset REPLY
+      spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
+      spinner stop $? $!
+    else
+      echo -e "\nSkipping dotfiles update\nRun '~/.update_dotfiles.sh' to update dotfiles manually"
+    fi
   else
-    echo -e "\nSkipping dotfiles update\nRun '~/.update_dotfiles.sh' to update dotfiles manually"
+    echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
   fi
-else
-  echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
 fi
 
 # Install Homebrew
