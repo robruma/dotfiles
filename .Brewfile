@@ -1,4 +1,5 @@
 # brew bundle --global
+tap 'buo/cask-upgrade'
 tap 'caskroom/cask'
 tap 'homebrew/boneyard'
 tap 'homebrew/completions'

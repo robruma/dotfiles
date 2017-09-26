@@ -194,7 +194,7 @@ if [[ -x /usr/local/bin/brew ]]; then
           echo -e "\nSkipping Homebrew bundle install\nRun 'brew bundle --global' to install bundles manually"
         fi
       fi
-      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated)
+      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated && /usr/local/bin/brew cask outdated)
       HOMEBREW_OUTDATED_RV=$?
       spinner stop $HOMEBREW_OUTDATED_RV $!
       if [[ -n $HOMEBREW_OUTDATED ]]; then
@@ -204,6 +204,7 @@ if [[ -x /usr/local/bin/brew ]]; then
           unset REPLY
           echo -e "\nUpgrading outdated Homebrew packages"
           /usr/local/bin/brew upgrade
+          /usr/local/bin/brew cu --yes --all --cleanup
           HOMEBREW_UPGRADE_RV=$?
           if [[ $HOMEBREW_UPGRADE_RV != 0 ]]; then
             echo "$(tput setaf 1)Homebrew outdated package upgrade failed$(tput sgr0)"
