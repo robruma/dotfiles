@@ -4,8 +4,10 @@
 !.bash-git-rc
 !.bash_profile
 !.Brewfile
+!.darwin.sh
 !.gitignore
 !.gitmodules
+!.linux.sh
 !.vimrc
 !.vim/
 !.vim/bundle
