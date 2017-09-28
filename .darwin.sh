@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
+if [[ $(uname -s) == Darwin ]] && [[ -S $SSH_AUTH_SOCK ]]; then
+  ssh-add -A 2>/dev/null
+fi
+
 # Install Homebrew
 if [[ $(uname -s) == Darwin ]] && [[ ! -x /usr/local/bin/brew ]]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"

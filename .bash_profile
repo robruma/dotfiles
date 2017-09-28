@@ -77,15 +77,10 @@ if [[ -f ~/.alias ]]; then
   . ~/.alias
 fi
 
-# Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
+# Run ssh-agent, set the appropriate environment and kill the agent PID on exit
 if [[ $- =~ i ]] && [[ -x $(which ssh-add 2>/dev/null) ]]; then
   eval $(ssh-agent -s) > /dev/null 2>&1;
   trap "kill $SSH_AGENT_PID" EXIT
-  if [[ $(uname -s) != Darwin ]] && [[ -S $SSH_AUTH_SOCK ]]; then
-    ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
-  else
-    ssh-add -A 2>/dev/null
-  fi
 fi
 
 # Global git settings
@@ -94,7 +89,7 @@ if [[ -x $(which git 2>/dev/null) ]]; then
   git config --global user.name "${GIT_NAME:-Anonymous}"
   git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
 else
-  echo -e "Warning: git not found in your path.\nFunctionality that uses git will be disabled"
+  echo -e "Warning: git not found in your path\nFunctionality that uses git will be disabled"
 fi
 
 # Git Prompt settings
