@@ -95,7 +95,7 @@ if [[ -x $(which git 2>/dev/null) ]]; then
   git config --global user.name "${GIT_NAME:-Anonymous}"
   git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
 else
-  echo -e "Warning: git not found in your path\nFunctionality that uses git will be disabled"
+  echo -e "$(tput setaf 3)Warning:$(tput sgr0) git not found in your path\nFunctionality that uses git will be disabled"
 fi
 
 # Git Prompt settings
