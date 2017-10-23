@@ -158,3 +158,9 @@ fi
 if [[ $(uname -s) == Darwin ]]; then
   . ~/.darwin.sh
 fi
+
+if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]]; then
+  command curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enable
+fi
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
