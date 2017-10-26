@@ -104,6 +104,8 @@ fi
 
 # GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
 
+# Needed for new prompt theme management
+__GIT_PROMPT_DIR=~/.bash-git-prompt
 GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
 GIT_PROMPT_SHOW_UNTRACKED_FILES=all # can be no, normal or all; determines counting of untracked files
 
