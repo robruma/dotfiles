@@ -81,7 +81,8 @@ fi
 if [[ $- =~ i ]] && [[ -x $(which ssh-add 2>/dev/null) ]]; then
   eval $(ssh-agent -s) > /dev/null 2>&1
   trap "kill $SSH_AGENT_PID" EXIT
-  # Add SSH keys to the OS agent and add the ability to override the identity lifetime by setting the environment variable SSH_IDENTITY_LIFETIME=N
+  # Add SSH keys to the OS agent and add the ability to override the identity lifetime by
+  # setting the environment variable SSH_IDENTITY_LIFETIME=N in ~/.profile
   if [[ $(uname -s) == Linux ]] && [[ -S $SSH_AUTH_SOCK ]]; then
     ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
   elif [[ $(uname -s) == Darwin ]] && [[ -S $SSH_AUTH_SOCK ]]; then
@@ -90,7 +91,7 @@ if [[ $- =~ i ]] && [[ -x $(which ssh-add 2>/dev/null) ]]; then
 fi
 
 # Global git settings
-# Override by setting the environment variables GIT_NAME and GIT_EMAIL
+# Override by setting the environment variables GIT_NAME and GIT_EMAIL in ~/.profile
 if [[ -x $(which git 2>/dev/null) ]]; then
   git config --global user.name "${GIT_NAME:-Anonymous}"
   git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
@@ -134,7 +135,7 @@ if [[ -x $(which git 2>/dev/null) ]] && [[ -f ~/.bash-git-prompt/gitprompt.sh ]]
 fi
 
 # Keep dotfiles up to date automatically by running ~/.update_dotfiles.sh
-# Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false
+# Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false in ~/.profile
 # Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
 if [[ -x $(which git 2>/dev/null) ]]; then
   if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
@@ -162,8 +163,9 @@ if [[ $(uname -s) == Darwin ]]; then
 fi
 
 # Install RVM option
+# Also provide the ability to disable by setting the environment variable INSTALL_RVM=false in ~/.profile
 # Override read timeout by setting the environment variable INSTALL_RVM_TIMEOUT=N in ~/.profile
-if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]]; then
+if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]] && ${INSTALL_RVM:-true} > /dev/null 2>&1; then
   read_prompt ${INSTALL_RVM_TIMEOUT:-5} "Install RVM?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     unset REPLY
@@ -173,6 +175,8 @@ if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]]; th
       command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
     fi
     command curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enable
+  else
+    echo -e "\nSkipping RVM install\nInstall RVM manually"
   fi
 fi
 
