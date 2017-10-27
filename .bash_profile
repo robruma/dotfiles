@@ -161,8 +161,15 @@ if [[ $(uname -s) == Darwin ]]; then
   . ~/.darwin.sh
 fi
 
+# Install RVM if scripts are not found
 if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]]; then
+  echo "Installing RVM"
+  # Test for GPG key
+  if ! gpg --list-keys mpapis@gmail.com >/dev/null 2>&1; then
+    command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+  fi
   command curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enable
 fi
 
+# Default RVM function
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
