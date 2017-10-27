@@ -161,14 +161,19 @@ if [[ $(uname -s) == Darwin ]]; then
   . ~/.darwin.sh
 fi
 
-# Install RVM if scripts are not found
+# Install RVM option
+# Override read timeout by setting the environment variable INSTALL_RVM_TIMEOUT=N in ~/.profile
 if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]]; then
-  echo "Installing RVM"
-  # Test for GPG key
-  if ! gpg --list-keys mpapis@gmail.com >/dev/null 2>&1; then
-    command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+  read_prompt ${INSTALL_RVM_TIMEOUT:-5} "Install RVM?"
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    unset REPLY
+    echo "Installing RVM"
+    # Test for GPG key
+    if ! gpg --list-keys mpapis@gmail.com >/dev/null 2>&1; then
+      command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    fi
+    command curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enable
   fi
-  command curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enable
 fi
 
 # Default RVM function
