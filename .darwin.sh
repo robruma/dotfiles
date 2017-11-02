@@ -60,7 +60,9 @@ if [[ -x /usr/local/bin/brew ]]; then
           /usr/local/bin/brew cu --yes --all --cleanup
           HOMEBREW_UPGRADE_RV=$?
           if [[ $HOMEBREW_UPGRADE_RV != 0 ]]; then
-            echo "$(tput setaf 1)Homebrew outdated package upgrade failed$(tput sgr0)"
+            echo -e "$(tput setaf 1)\nHomebrew outdated package upgrade failed\n$(tput sgr0)"
+          else
+            echo -e "$(tput setaf 2)\nHomebrew outdated package upgrade completed successfully\n$(tput sgr0)"
           fi
         else
           echo -e "\nSkipping Homebrew outdated package upgrade\nRun 'brew upgrade' to upgrade outdated packages manually"
