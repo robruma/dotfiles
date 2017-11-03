@@ -37,6 +37,7 @@ let g:go_highlight_fields=1
 let g:go_highlight_types=1
 let g:go_highlight_operators=1
 let g:go_highlight_build_constraints=1
+let g:go_version_warning=0
 let g:vim_markdown_folding_disabled=1
 "let g:syntastic_puppet_puppetlint_args='--fix'
 "let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'puppet'], 'passive_filetypes': [] }
