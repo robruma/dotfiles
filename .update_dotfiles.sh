@@ -14,6 +14,7 @@ if ! git diff --exit-code --quiet origin/${BRANCH} || [[ $(git submodule update 
   git pull origin ${BRANCH}
   git submodule init
   git submodule foreach --recursive git pull origin ${BRANCH}
+  git submodule foreach --recursive git submodule update --init
   git commit -a -m "${COMMENT}"
   git push origin ${BRANCH}
   git submodule update

@@ -1,6 +1,6 @@
-[submodule ".vim/bundle/syntastic"]
-  path = .vim/bundle/syntastic
-  url = https://github.com/scrooloose/syntastic.git
+[submodule ".vim/bundle/ale"]
+  path = .vim/bundle/ale
+  url = https://github.com/w0rp/ale.git
   branch = master
 [submodule ".vim/bundle/tabular"]
   path = .vim/bundle/tabular
@@ -78,10 +78,6 @@
   path = .vim/bundle/vim-go
   url = https://github.com/fatih/vim-go.git
   branch = master
-[submodule ".vim/bundle/vim-javacomplete2"]
-  path = .vim/bundle/vim-javacomplete2
-  url = https://github.com/artur-shaik/vim-javacomplete2.git
-  branch = master
 [submodule ".vim/bundle/groovy"]
   path = .vim/bundle/groovy
   url = https://github.com/vim-scripts/groovy.vim.git
@@ -89,6 +85,10 @@
 [submodule ".vim/bundle/vim-markdown"]
   path = .vim/bundle/vim-markdown
   url = https://github.com/plasticboy/vim-markdown.git
+  branch = master
+[submodule ".vim/bundle/completor.vim"]
+  path = .vim/bundle/completor.vim
+  url = https://github.com/maralla/completor.vim.git
   branch = master
 [submodule ".vim/bundle/jedi-vim"]
   path = .vim/bundle/jedi-vim
