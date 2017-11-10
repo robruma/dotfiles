@@ -42,9 +42,13 @@
   path = .vim/bundle/vim-pathogen
   url = https://github.com/tpope/vim-pathogen.git
   branch = master
-[submodule ".vim/bundle/vdebug"]
-  path = .vim/bundle/vdebug
-  url = https://github.com/joonty/vdebug.git
+[submodule ".vim/bundle/vim-vebugger"]
+  path = .vim/bundle/vim-vebugger
+  url = https://github.com/idanarye/vim-vebugger.git
+  branch = master
+[submodule ".vim/bundle/vimproc.vim"]
+  path = .vim/bundle/vimproc.vim
+  url = https://github.com/Shougo/vimproc.vim.git
   branch = master
 [submodule ".bash-git-prompt"]
   path = .bash-git-prompt
