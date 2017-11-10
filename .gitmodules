@@ -90,3 +90,7 @@
   path = .vim/bundle/vim-markdown
   url = https://github.com/plasticboy/vim-markdown.git
   branch = master
+[submodule ".vim/bundle/jedi-vim"]
+  path = .vim/bundle/jedi-vim
+  url = https://github.com/davidhalter/jedi-vim.git
+  branch = master

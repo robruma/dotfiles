@@ -8,8 +8,8 @@
 !.gitignore
 !.gitmodules
 !.linux.sh
+!.update_dotfiles.sh
 !.vimrc
 !.vim/
 !.vim/bundle
 !.vim/bundle/**
-!.update_dotfiles.sh
