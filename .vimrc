@@ -50,4 +50,4 @@ if has("autocmd")
 endif
 silent !rm -rf ~/.vim/bundle/syntastic/ ~/.vim/bundle/vdebug/ ~/.vim/bundle/vim-javacomplete2/ > /dev/null 2>&1
 silent !make -C ~/.vim/bundle/vimproc.vim/ > /dev/null 2>&1
-silent ![[ \! -f ~/.pylintrc ]] && pylint --generate-rcfile > ~/.pylintrc > /dev/null 2>&1
+silent !command -v pylint >/dev/null 2>&1 || { echo >&2 "Warning: pylint not installed"; }

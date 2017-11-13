@@ -8,6 +8,7 @@
 !.gitignore
 !.gitmodules
 !.linux.sh
+!.pylintrc
 !.update_dotfiles.sh
 !.vimrc
 !.vim/
