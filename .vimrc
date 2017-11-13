@@ -48,5 +48,6 @@ if has("autocmd")
   autocmd BufReadPost Jenkinsfile set syntax=groovy
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 endif
+silent !rm -rf ~/.vim/bundle/syntastic/ ~/.vim/bundle/vdebug/ ~/.vim/bundle/vim-javacomplete2/ > /dev/null 2>&1
 silent !make -C ~/.vim/bundle/vimproc.vim/ > /dev/null 2>&1
 silent ![[ \! -f ~/.pylintrc ]] && pylint --generate-rcfile > ~/.pylintrc > /dev/null 2>&1
