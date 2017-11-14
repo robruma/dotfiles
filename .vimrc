@@ -51,6 +51,6 @@ if has("autocmd")
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
   endif
 endif
-silent !rm -rf ~/.vim/bundle/syntastic/ ~/.vim/bundle/vdebug/ ~/.vim/bundle/vim-javacomplete2/ > /dev/null 2>&1
-silent !make -C ~/.vim/bundle/vimproc.vim/ > /dev/null 2>&1 || { echo -e >&2 "$(tput setaf 1)Failure:$(tput sgr0) Running make in ~/.vim/bundle/vimproc.vim/ was not successful"; }
+silent !rm -rf ~/.vim/bundle/syntastic/ ~/.vim/bundle/vdebug/ ~/.vim/bundle/vim-javacomplete2/ > /dev/null 2>&1 || { echo -e >&2 "$(tput setaf 1)Failure:$(tput sgr0) Removing legacy plugins was unsuccessful"; }
+silent !make -C ~/.vim/bundle/vimproc.vim/ > /dev/null 2>&1 || { echo -e >&2 "$(tput setaf 1)Failure:$(tput sgr0) Running make in ~/.vim/bundle/vimproc.vim/ was unsuccessful"; }
 silent !command -v pylint > /dev/null 2>&1 || { echo -e >&2 "$(tput setaf 3)Warning:$(tput sgr0) pylint not installed\nInstall using 'python -m pip install pylint'"; }
