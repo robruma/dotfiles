@@ -47,7 +47,9 @@ if has("autocmd")
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
   autocmd BufReadPost Jenkinsfile set syntax=groovy
-  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+  if v:version > 703
+    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+  endif
 endif
 silent !rm -rf ~/.vim/bundle/syntastic/ ~/.vim/bundle/vdebug/ ~/.vim/bundle/vim-javacomplete2/ > /dev/null 2>&1
 silent !make -C ~/.vim/bundle/vimproc.vim/ > /dev/null 2>&1 || { echo -e >&2 "$(tput setaf 1)Failure:$(tput sgr0) Running make in ~/.vim/bundle/vimproc.vim/ was not successful"; }
