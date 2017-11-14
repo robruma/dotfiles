@@ -27,6 +27,14 @@ set statusline+=%*
 set statusline+=%l/%L
 set statusline+=%{fugitive#statusline()}
 set completeopt+=preview
+let g:vebugger_leader='<C-d>'
+map <F8> :VBGstepOver<CR>
+map <F7> :VBGstepIn<CR>
+map <S-F8> :VBGstepOut<CR>
+map <F9> :VBGcontinue<CR>
+map <C-F8> :VBGtoggleBreakpointThisLine<CR>
+map <C-F8><C-F8> :VBGeval
+vmap <C-F8><C-F8> :VBGevalSelectedText
 let g:jedi#use_tabs_not_buffers=1
 let g:go_highlight_functions=1
 let g:go_highlight_methods=1
