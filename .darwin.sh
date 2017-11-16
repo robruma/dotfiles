@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Install MacOS Command Line Tools
+if [[ -x /usr/bin/xcode-select ]] && [[ ! -d /Library/Developer/CommandLineTools ]]; then
+  /usr/bin/xcode-select --install
+fi
+
 # Install Homebrew
 if [[ $(uname -s) == Darwin ]] && [[ ! -x /usr/local/bin/brew ]]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
