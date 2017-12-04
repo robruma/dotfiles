@@ -19,4 +19,6 @@ export HISTTIMEFORMAT="%D %T "
 export EDITOR=vim
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+if [[ -d ${HOME}/.rvm/bin ]]; then
+  export PATH="$PATH:$HOME/.rvm/bin"
+fi
