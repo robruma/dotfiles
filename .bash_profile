@@ -93,8 +93,11 @@ fi
 # Global git settings
 # Override by setting the environment variables GIT_NAME and GIT_EMAIL in ~/.profile
 if [[ -x $(which git 2>/dev/null) ]]; then
-  git config --global user.name "${GIT_NAME:-Anonymous}"
+  git config --global alias.last 'log -1 HEAD'
+  git config --global alias.tree 'log --graph --decorate --pretty=oneline --abbrev-commit'
+  git config --global alias.unstage 'reset HEAD --'
   git config --global user.email "${GIT_EMAIL:-anonymous@localhost}"
+  git config --global user.name "${GIT_NAME:-Anonymous}"
 else
   echo -e "$(tput setaf 3)Warning:$(tput sgr0) git not found in your path\nFunctionality that uses git will be disabled"
 fi
