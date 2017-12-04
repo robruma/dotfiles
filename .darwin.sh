@@ -84,3 +84,8 @@ if [[ -x /usr/local/bin/brew ]]; then
     echo "Homebrew update check is disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
   fi
 fi
+
+# Initialize rbenv
+if [[ -x /usr/local/bin/rbenv ]]; then
+  eval "$(rbenv init -)"
+fi
