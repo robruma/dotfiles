@@ -1,5 +1,8 @@
 # Add go library to path
-export GOPATH=/usr/local/opt/go/libexec/bin
+if [[ -d ${HOME}/go ]]; then
+  export GOPATH=${HOME}/go
+  export PATH=${PATH}:${GOPATH}/bin
+fi
 
 # Set prompt during privilege escalation
 export SUDO_PS1='\h:\W \u\$ '

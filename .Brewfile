@@ -21,6 +21,7 @@ brew 'gdbm'
 brew 'gettext'
 brew 'git'
 brew 'gnu-getopt'
+brew 'go', args: ['--cross-compile-common']
 brew 'heimdal'
 brew 'jq'
 brew 'kubernetes-cli'
