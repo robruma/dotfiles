@@ -89,6 +89,7 @@ if [[ $- =~ i ]] && [[ -x $(which ssh-add 2>/dev/null) ]]; then
   if [[ $(uname -s) == Linux ]] && [[ -S $SSH_AUTH_SOCK ]]; then
     ssh-add -t ${SSH_IDENTITY_LIFETIME:-604800}
   elif [[ $(uname -s) == Darwin ]] && [[ -S $SSH_AUTH_SOCK ]]; then
+    ssh-add -K 2>/dev/null
     ssh-add -A 2>/dev/null
   fi
 fi
@@ -169,9 +170,9 @@ if [[ $(uname -s) == Darwin ]]; then
 fi
 
 # Install RVM option
-# Also provide the ability to disable by setting the environment variable INSTALL_RVM=false in ~/.profile
+# Provide the ability to install RVM automatically by setting the environment variable INSTALL_RVM=true in ~/.profile
 # Override read timeout by setting the environment variable INSTALL_RVM_TIMEOUT=N in ~/.profile
-if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]] && ${INSTALL_RVM:-true} > /dev/null 2>&1; then
+if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]] && ${INSTALL_RVM:-false} > /dev/null 2>&1; then
   read_prompt ${INSTALL_RVM_TIMEOUT:-5} "Install RVM?"
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     unset REPLY
@@ -182,7 +183,7 @@ if [[ ! -f ${HOME}/.rvm/scripts/rvm ]] && [[ -x $(which curl 2>/dev/null) ]] && 
     fi
     command curl -L https://get.rvm.io | bash -s stable --rails --autolibs=enable
   else
-    echo -e "\nSkipping RVM install\nInstall RVM manually"
+    echo -e "\nSkipping RVM install\nInstall RVM manually or set the environment variable INSTALL_RVM=true in ~/.profile"
   fi
 fi
 
