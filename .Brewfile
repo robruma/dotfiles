@@ -1,6 +1,6 @@
 # brew bundle --global
 tap 'buo/cask-upgrade'
-tap 'caskroom/cask'
+#tap 'caskroom/cask'
 tap 'homebrew/cask-versions'
 tap 'homebrew/boneyard'
 tap 'homebrew/core'
