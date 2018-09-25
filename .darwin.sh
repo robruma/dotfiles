@@ -55,6 +55,7 @@ if [[ -x /usr/local/bin/brew ]]; then
       spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated && /usr/local/bin/brew cask outdated --greedy)
       HOMEBREW_OUTDATED_RV=$?
       spinner stop $HOMEBREW_OUTDATED_RV $!
+      # Allow a comma-delimited cask upgrade exclude list by setting the environment variable HOMEBREW_CASK_UPGRADE_EXCLUDE in ~/.profile
       HOMEBREW_CASK_UPGRADE_EXCLUDE=(${HOMEBREW_CASK_UPGRADE_EXCLUDE//,/ })
       for CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
       do
@@ -68,7 +69,6 @@ if [[ -x /usr/local/bin/brew ]]; then
           echo -e "\nUpgrading outdated Homebrew packages"
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
           /usr/local/bin/brew upgrade --ignore-pinned
-          # Allow a comma-delimited cask upgrade exclude list by setting the environment variable HOMEBREW_CASK_UPGRADE_EXCLUDE in ~/.profile
           if [[ -z $HOMEBREW_CASK_UPGRADE_EXCLUDE ]]; then
             /usr/local/bin/brew cu --yes --all --cleanup
             HOMEBREW_UPGRADE_RV=$?
