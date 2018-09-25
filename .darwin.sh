@@ -70,9 +70,11 @@ if [[ -x /usr/local/bin/brew ]]; then
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
           /usr/local/bin/brew upgrade --ignore-pinned
           if [[ -z $HOMEBREW_CASK_UPGRADE_EXCLUDE ]]; then
+            echo -e "\nNo exclude list found: Upgrading all casks\n"
             /usr/local/bin/brew cu --yes --all --cleanup
             HOMEBREW_UPGRADE_RV=$?
           else
+            echo -e "\nExclude list found: Skipping ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}\n"
             HOMEBREW_CASKS=($(/usr/local/bin/brew cask list -1))
             for CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
             do
