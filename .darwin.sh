@@ -59,7 +59,7 @@ if [[ -x /usr/local/bin/brew ]]; then
       HOMEBREW_CASK_UPGRADE_EXCLUDE=(${HOMEBREW_CASK_UPGRADE_EXCLUDE//,/ })
       for CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
       do
-        HOMEBREW_OUTDATED=${HOMEBREW_OUTDATED/${CASK}/"${CASK} (excluded)"}
+        HOMEBREW_OUTDATED=${HOMEBREW_OUTDATED/${CASK}/"$(tput setab 1)${CASK}$(tput sgr0) ($(tput setaf 3)$(tput bold)excluded$(tput sgr0))"}
       done
       if [[ -n $HOMEBREW_OUTDATED ]]; then
         echo -e "The following Homebrew packages are outdated:\n\n${HOMEBREW_OUTDATED}\n"
