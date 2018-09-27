@@ -52,35 +52,49 @@ if [[ -x /usr/local/bin/brew ]]; then
           echo -e "\nSkipping Homebrew bundle install\nRun 'brew bundle --global' to install bundles manually"
         fi
       fi
-      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=$(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated && /usr/local/bin/brew cask outdated --greedy)
+      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=($(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated && /usr/local/bin/brew cask outdated --greedy))
       HOMEBREW_OUTDATED_RV=$?
       spinner stop $HOMEBREW_OUTDATED_RV $!
       # Allow a comma-delimited cask upgrade exclude list by setting the environment variable HOMEBREW_CASK_UPGRADE_EXCLUDE in ~/.profile
       HOMEBREW_CASK_UPGRADE_EXCLUDE=(${HOMEBREW_CASK_UPGRADE_EXCLUDE//,/ })
       for CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
       do
-        HOMEBREW_OUTDATED=${HOMEBREW_OUTDATED/${CASK}/"$(tput setab 1)${CASK}$(tput sgr0) ($(tput setaf 3)$(tput bold)excluded$(tput sgr0))"}
+        for ELEMENT in ${!HOMEBREW_OUTDATED[@]}
+        do
+          if [[ $CASK =~ ^${HOMEBREW_OUTDATED[$ELEMENT]}$ ]]; then
+            HOMEBREW_OUTDATED[$ELEMENT]="$(tput setab 1)${CASK}$(tput sgr0) ($(tput setaf 3)$(tput bold)excluded$(tput sgr0))"
+          fi
+        done
       done
-      if [[ -n $HOMEBREW_OUTDATED ]]; then
-        echo -e "The following Homebrew packages are outdated:\n\n${HOMEBREW_OUTDATED}\n"
+      if [[ -n ${HOMEBREW_OUTDATED[@]} ]]; then
+        echo -e "The following Homebrew packages are outdated:\n"
+        for PACKAGE in ${!HOMEBREW_OUTDATED[@]}
+        do
+          echo -e ${HOMEBREW_OUTDATED[$PACKAGE]} && [[ $PACKAGE -eq $((${#HOMEBREW_OUTDATED[@]} - 1)) ]] && echo
+        done
         read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Upgrade outdated Homebrew packages?"
         if [[ $REPLY =~ ^[Yy]$ ]]; then
           unset REPLY
-          echo -e "\nUpgrading outdated Homebrew packages"
+          echo -e "\nUpgrading outdated Homebrew packages\n"
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
           /usr/local/bin/brew upgrade --ignore-pinned
           if [[ -z $HOMEBREW_CASK_UPGRADE_EXCLUDE ]]; then
-            echo -e "\nNo exclude list found: Upgrading all casks\n"
+            echo -e "No exclude list found: Upgrading all casks\n"
             /usr/local/bin/brew cu --yes --all --cleanup
             HOMEBREW_UPGRADE_RV=$?
           else
-            echo -e "\nExclude list found: Skipping ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}\n"
             HOMEBREW_CASKS=($(/usr/local/bin/brew cask list -1))
             for CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
             do
-              HOMEBREW_CASKS=(${HOMEBREW_CASKS[@]%${CASK}})
+              for ELEMENT in ${!HOMEBREW_CASKS[@]}
+              do
+                if [[ $CASK =~ ^${HOMEBREW_CASKS[$ELEMENT]}$ ]]; then
+                  echo -e "Excluded cask found: Skipping $(tput setab 1)${HOMEBREW_CASKS[$ELEMENT]}$(tput sgr0)"
+                  unset HOMEBREW_CASKS[$ELEMENT]
+                fi
+              done
             done
-            /usr/local/bin/brew cask upgrade ${HOMEBREW_CASKS[@]}
+            echo && /usr/local/bin/brew cask upgrade ${HOMEBREW_CASKS[@]}
             HOMEBREW_UPGRADE_RV=$?
           fi
           if [[ $HOMEBREW_UPGRADE_RV != 0 ]]; then
