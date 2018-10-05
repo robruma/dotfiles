@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install MacOS Command Line Tools
-if [[ -x /usr/bin/xcode-select ]] && [[ ! -d /Library/Developer/CommandLineTools ]]; then
+if [[ -x /usr/bin/xcode-select ]] && [[ ! -d /Library/Developer/CommandLineTools/usr/bin ]]; then
   /usr/bin/xcode-select --install
 fi
 
