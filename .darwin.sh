@@ -84,6 +84,7 @@ if [[ -x /usr/local/bin/brew ]]; then
             HOMEBREW_UPGRADE_RV=$?
           else
             HOMEBREW_CASKS=($(/usr/local/bin/brew cask list -1))
+            NEWLINE="\n"
             for EXCLUDED_CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
             do
               for EXCLUDED_ELEMENT in ${!HOMEBREW_CASKS[@]}
@@ -92,8 +93,8 @@ if [[ -x /usr/local/bin/brew ]]; then
                   for EXCLUDED_PACKAGE in ${!HOMEBREW_OUTDATED[@]}
                   do
                     if [[ "$(tput setab 1)${EXCLUDED_CASK}$(tput sgr0) ($(tput setaf 3)$(tput bold)excluded$(tput sgr0))" == ${HOMEBREW_OUTDATED[$EXCLUDED_PACKAGE]} ]]; then
-                      echo -e "Excluded cask found: Skipping $(tput setab 1)${HOMEBREW_CASKS[$EXCLUDED_ELEMENT]}$(tput sgr0)"
-                      unset HOMEBREW_CASKS[$EXCLUDED_ELEMENT]
+                      echo -e "${NEWLINE}Excluded cask found: Skipping $(tput setab 1)${HOMEBREW_CASKS[$EXCLUDED_ELEMENT]}$(tput sgr0)"
+                      unset HOMEBREW_CASKS[$EXCLUDED_ELEMENT] NEWLINE
                     fi
                   done
                 fi
