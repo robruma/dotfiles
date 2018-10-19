@@ -25,15 +25,24 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
+# Allow for an override to be applied across all package updates
+read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Bypass update prompts? (s to skip)"
+case $REPLY in
+  Y | y ) UPDATE_ALL=true; unset REPLY;;
+  S | s ) SKIP=true; unset REPLY;;
+  * ) echo -e "\nContinuing..."; unset REPLY;;
+esac
+
 # Keep Homebrew packages updated
-if [[ -x /usr/local/bin/brew ]]; then
-  # Present user with the abilty to automatically update and upgrade outdated Homebrew packages
+if ! $(${SKIP:-false}) && [[ -x /usr/local/bin/brew ]]; then
+  # Present user with the ability to automatically update and upgrade outdated Homebrew packages
   # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
-  if ${HOMEBREW_UPDATE_CHECK:-true} > /dev/null 2>&1; then
+  #if ${HOMEBREW_UPDATE_CHECK:-true} > /dev/null 2>&1; then
+  if $(${HOMEBREW_UPDATE_CHECK:-true}); then
     # Homebrew update logic
     # Override read timeout by setting the environment variable HOMEBREW_UPDATE_TIMEOUT=N in ~/.profile
-    read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Check for Homebrew updates?"
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    $(${UPDATE_ALL:-false}) || read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Check for Homebrew updates?"
+    if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
       unset REPLY
       # Ensure Homebrew bundles are installed
       spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/usr/local/bin/brew bundle check --global --no-upgrade)
@@ -43,8 +52,8 @@ if [[ -x /usr/local/bin/brew ]]; then
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
         echo -e "Ensuring Homebrew bundle tap is installed"
         /usr/local/bin/brew tap homebrew/bundle
-        read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Install Homebrew bundles?"
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
+        $(${UPDATE_ALL:-false}) || read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Install Homebrew bundles?"
+        if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
           unset REPLY
           echo -e "\nInstalling Homebrew bundles"
           /usr/local/bin/brew bundle --global --no-upgrade
@@ -72,8 +81,8 @@ if [[ -x /usr/local/bin/brew ]]; then
         do
           echo -e ${HOMEBREW_OUTDATED[$PACKAGE]} && [[ $PACKAGE -eq $((${#HOMEBREW_OUTDATED[@]} - 1)) ]] && echo
         done
-        read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Upgrade outdated Homebrew packages?"
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
+        $(${UPDATE_ALL:-false}) || read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Upgrade outdated Homebrew packages?"
+        if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
           unset REPLY
           echo -e "\nUpgrading outdated Homebrew packages\n"
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
@@ -120,7 +129,21 @@ if [[ -x /usr/local/bin/brew ]]; then
       echo -e "\nSkipping Homebrew update check\nRun 'brew update; brew outdated' to check manually then 'brew upgrade' if necessary"
     fi
   else
-    echo "Homebrew update check is disabled, set HOMEBREW_UPDATE_CHECK=true in ~/.profile to enable"
+    echo "Homebrew update check is disabled, unset HOMEBREW_UPDATE_CHECK to enable"
+  fi
+else
+  echo -e "\nSkipping updates"
+fi
+
+# Update MacOS in the background
+if ! $(${SKIP:-false}) && [[ -x /usr/sbin/softwareupdate ]]; then
+  $(${UPDATE_ALL:-false}) || read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Check for MacOS updates?"
+  if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
+    unset REPLY
+    echo -e "\nUpdating MacOS in background mode"
+    sudo /usr/sbin/softwareupdate -a -i --background
+  else
+    echo -e "\nSkipping MacOS update check\nRun 'softwareupdate -a -i' to check manually"
   fi
 fi
 
@@ -128,3 +151,11 @@ fi
 if [[ -x /usr/local/bin/rbenv ]]; then
   eval "$(rbenv init -)"
 fi
+
+# Initialize pyenv
+if [[ -x /usr/local/bin/pyenv ]]; then
+  eval "$(pyenv init -)"
+fi
+
+# Cleanup
+unset UPDATE_ALL SKIP

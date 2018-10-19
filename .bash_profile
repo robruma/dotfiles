@@ -145,7 +145,7 @@ fi
 # Also provide the ability to disable by setting the environment variable UPDATE_DOTFILES=false in ~/.profile
 # Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
 if [[ -x $(which git 2>/dev/null) ]]; then
-  if [[ -x ~/.update_dotfiles.sh ]] && ${UPDATE_DOTFILES:-true} > /dev/null 2>&1; then
+  if [[ -x ~/.update_dotfiles.sh ]] && $(${UPDATE_DOTFILES:-true}); then
     read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
     if [[ $REPLY =~ ^[Yy]$ ]]; then
       unset REPLY
@@ -155,7 +155,7 @@ if [[ -x $(which git 2>/dev/null) ]]; then
       echo -e "\nSkipping dotfiles update\nRun '~/.update_dotfiles.sh' to update dotfiles manually"
     fi
   else
-    echo "Update dotfiles is disabled, set UPDATE_DOTFILES=true in ~/.profile to enable"
+    echo "Update dotfiles is disabled, unset UPDATE_DOTFILES to enable"
   fi
 fi
 
