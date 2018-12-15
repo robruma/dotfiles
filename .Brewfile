@@ -10,6 +10,7 @@ cask 'xquartz'
 # Packages
 brew 'ansible'
 brew 'ansible-lint'
+brew 'ask-cli'
 brew 'autoconf'
 brew 'autoenv'
 brew 'automake'
