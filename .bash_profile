@@ -83,7 +83,7 @@ fi
 # Run ssh-agent, set the appropriate environment and kill the agent PID on exit
 if [[ $- =~ i ]] && [[ -x $(which ssh-add 2>/dev/null) ]]; then
   eval $(ssh-agent -s) > /dev/null 2>&1
-  trap "kill $SSH_AGENT_PID" EXIT
+  trap "ssh-agent -k" EXIT
   # Add SSH keys to the OS agent and add the ability to override the identity lifetime by
   # setting the environment variable SSH_IDENTITY_LIFETIME=N in ~/.profile
   if [[ $(uname -s) == Linux ]] && [[ -S $SSH_AUTH_SOCK ]]; then
