@@ -173,6 +173,9 @@ if ! $(${SKIP:-false}) && [[ $(uname -s) == Darwin ]]; then
   . ~/.darwin.sh
 fi
 
+# Cleanup
+unset EXECUTE_UPDATE SKIP
+
 # Install RVM option
 # Provide the ability to install RVM automatically by setting the environment variable INSTALL_RVM=true in ~/.profile
 # Override read timeout by setting the environment variable INSTALL_RVM_TIMEOUT=N in ~/.profile
