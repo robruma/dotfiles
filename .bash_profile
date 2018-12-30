@@ -146,9 +146,13 @@ fi
 # Override read timeout by setting the environment variable UPDATE_DOTFILES_TIMEOUT=N in ~/.profile
 if [[ -x $(which git 2>/dev/null) ]]; then
   if [[ -x ~/.update_dotfiles.sh ]] && $(${UPDATE_DOTFILES:-true}); then
-    read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles?"
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-      unset REPLY
+    read_prompt ${UPDATE_DOTFILES_TIMEOUT:-5} "Update dotfiles? (s to skip)"
+    case $REPLY in
+      Y | y ) EXECUTE_UPDATE=true; unset REPLY;;
+      S | s ) SKIP=true; unset REPLY;;
+      * ) echo -e "\nContinuing..."; unset REPLY;;
+    esac
+    if $(${EXECUTE_UPDATE:-false}); then
       spinner start "Updating dotfiles" & ~/.update_dotfiles.sh > /dev/null 2>&1
       spinner stop $? $!
     else
@@ -160,12 +164,12 @@ if [[ -x $(which git 2>/dev/null) ]]; then
 fi
 
 # Source only on Linux specific operating systems
-if [[ $(uname -s) == Linux ]]; then
+if ! $(${SKIP:-false}) && [[ $(uname -s) == Linux ]]; then
   . ~/.linux.sh
 fi
 
 # Source only on Darwin specific operating systems
-if [[ $(uname -s) == Darwin ]]; then
+if ! $(${SKIP:-false}) && [[ $(uname -s) == Darwin ]]; then
   . ~/.darwin.sh
 fi
 
