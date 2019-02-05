@@ -46,6 +46,7 @@
   path = .vim/bundle/vim-vebugger
   url = https://github.com/idanarye/vim-vebugger.git
   branch = master
+  ignore = dirty
 [submodule ".vim/bundle/vimproc.vim"]
   path = .vim/bundle/vimproc.vim
   url = https://github.com/Shougo/vimproc.vim.git
@@ -94,7 +95,9 @@
   path = .vim/bundle/jedi-vim
   url = https://github.com/davidhalter/jedi-vim.git
   branch = master
+  ignore = dirty
 [submodule ".vim/bundle/vim-pyenv"]
   path = .vim/bundle/vim-pyenv
   url = https://github.com/lambdalisue/vim-pyenv.git
   branch = master
+  ignore = dirty
