@@ -94,3 +94,7 @@
   path = .vim/bundle/jedi-vim
   url = https://github.com/davidhalter/jedi-vim.git
   branch = master
+[submodule ".vim/bundle/vim-pyenv"]
+  path = .vim/bundle/vim-pyenv
+  url = https://github.com/lambdalisue/vim-pyenv.git
+  branch = master
