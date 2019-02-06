@@ -124,12 +124,14 @@ fi
 
 # GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
 # GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
-GIT_PROMPT_START="[\u@\h \W]"
-if [[ $UID == 0 ]]; then
-  GIT_PROMPT_END='# '
-else
-  GIT_PROMPT_END='$ '
-fi
+GIT_PROMPT_LEADING_SPACE=0
+
+#GIT_PROMPT_START="[\u@\h \W]"
+#if [[ $UID == 0 ]]; then
+#  GIT_PROMPT_END='# '
+#else
+#  GIT_PROMPT_END='$ '
+#fi
 
 # as last entry source the gitprompt script
 # GIT_PROMPT_THEME=Custom # use custom .git-prompt-colors.sh
