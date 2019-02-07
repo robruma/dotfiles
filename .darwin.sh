@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Install MacOS Command Line Tools
-if [[ -x /usr/bin/xcode-select ]] && [[ ! -d /Library/Developer/CommandLineTools/usr/bin ]]; then
+if ! $(${SKIP:-false}) && [[ -x /usr/bin/xcode-select ]] && [[ ! -d /Library/Developer/CommandLineTools/usr/bin ]]; then
   /usr/bin/xcode-select --install
 fi
 
 # Install Homebrew
-if [[ $(uname -s) == Darwin ]] && [[ ! -x /usr/local/bin/brew ]]; then
+if ! $(${SKIP:-false}) && [[ $(uname -s) == Darwin ]] && [[ ! -x /usr/local/bin/brew ]]; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
@@ -25,16 +25,15 @@ if [[ -x /usr/local/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt 
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
-# Allow for an override to be applied across all package updates
-read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Bypass update prompts? (s to skip)"
-case $REPLY in
-  Y | y ) UPDATE_ALL=true; unset REPLY;;
-  S | s ) SKIP=true; unset REPLY;;
-  * ) echo -e "\nContinuing..."; unset REPLY;;
-esac
-
 # Keep Homebrew packages updated
 if ! $(${SKIP:-false}) && [[ -x /usr/local/bin/brew ]]; then
+  # Allow for an override to be applied across all package updates
+  read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Bypass update prompts?"
+  case $REPLY in
+    Y | y ) UPDATE_ALL=true; unset REPLY;;
+    * ) echo -e "\nContinuing..."; unset REPLY;;
+  esac
+
   # Present user with the ability to automatically update and upgrade outdated Homebrew packages
   # Also provide the ability to disable by setting the environment variable HOMEBREW_UPDATE_CHECK=false
   #if ${HOMEBREW_UPDATE_CHECK:-true} > /dev/null 2>&1; then

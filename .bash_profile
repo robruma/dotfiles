@@ -166,12 +166,12 @@ if [[ -x $(which git 2>/dev/null) ]]; then
 fi
 
 # Source only on Linux specific operating systems
-if ! $(${SKIP:-false}) && [[ $(uname -s) == Linux ]]; then
+if [[ $(uname -s) == Linux ]]; then
   . ~/.linux.sh
 fi
 
 # Source only on Darwin specific operating systems
-if ! $(${SKIP:-false}) && [[ $(uname -s) == Darwin ]]; then
+if [[ $(uname -s) == Darwin ]]; then
   . ~/.darwin.sh
 fi
 
