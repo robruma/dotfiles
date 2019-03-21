@@ -84,8 +84,9 @@ if ! $(${SKIP:-false}) && [[ -x /usr/local/bin/brew ]]; then
         if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
           unset REPLY
           echo -e "\nUpgrading outdated Homebrew packages\n"
+          # Upgrade without building from source. See brew upgrade --force-bottle
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
-          /usr/local/bin/brew upgrade --ignore-pinned
+          /usr/local/bin/brew upgrade --ignore-pinned --force-bottle
           if [[ -z ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]} ]]; then
             echo -e "No exclude list found: Upgrading all casks\n"
             /usr/local/bin/brew cu --yes --all --cleanup
