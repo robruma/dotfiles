@@ -42,11 +42,11 @@
   path = .vim/bundle/vim-pathogen
   url = https://github.com/tpope/vim-pathogen.git
   branch = master
-[submodule ".vim/bundle/vim-vebugger"]
-  path = .vim/bundle/vim-vebugger
-  url = https://github.com/idanarye/vim-vebugger.git
-  branch = master
-  ignore = dirty
+#[submodule ".vim/bundle/vim-vebugger"]
+#  path = .vim/bundle/vim-vebugger
+#  url = https://github.com/idanarye/vim-vebugger.git
+#  branch = master
+#  ignore = dirty
 [submodule ".vim/bundle/vimproc.vim"]
   path = .vim/bundle/vimproc.vim
   url = https://github.com/Shougo/vimproc.vim.git
@@ -101,3 +101,7 @@
   url = https://github.com/lambdalisue/vim-pyenv.git
   branch = master
   ignore = dirty
+[submodule ".vim/bundle/vim-vdebug/vdebug"]
+  path = .vim/bundle/vim-vdebug/vdebug
+  url = https://github.com/vim-vdebug/vdebug.git
+  branch = master
