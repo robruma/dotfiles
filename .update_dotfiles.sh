@@ -13,8 +13,8 @@ git fetch
 if ! git diff --submodule=diff --exit-code --quiet origin/${BRANCH} || [[ $(git submodule update --recursive --remote > /dev/null 2>&1; git submodule status --recursive) =~ ^+.* ]] || [[ -n $(git status --porcelain) ]]; then
   git pull origin ${BRANCH}
   git submodule init
-  git submodule foreach --recursive git pull origin ${BRANCH}
-  git submodule foreach --recursive git submodule update --init
+  git submodule foreach --recursive "git pull origin ${BRANCH}"
+  git submodule foreach --recursive "git submodule update --init"
   git commit -a -m "${COMMENT}"
   git push origin ${BRANCH}
   git submodule update
