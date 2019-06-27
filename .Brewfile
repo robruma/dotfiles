@@ -32,6 +32,7 @@ brew 'go', args: ['cross-compile-common']
 brew 'heimdal'
 brew 'hg'
 brew 'jq'
+brew 'kops'
 brew 'kubernetes-cli'
 brew 'ldapvi'
 brew 'libgpg-error'
