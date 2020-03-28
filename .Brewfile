@@ -31,6 +31,7 @@ brew 'gnu-getopt'
 brew 'go', args: ['cross-compile-common']
 brew 'heimdal'
 brew 'hg'
+brew 'iproute2mac'
 brew 'istioctl'
 brew 'jenv'
 brew 'jq'
