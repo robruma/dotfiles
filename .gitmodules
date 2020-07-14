@@ -102,3 +102,7 @@
   url = https://github.com/lambdalisue/vim-pyenv.git
   branch = master
   ignore = dirty
+[submodule ".vim/bundle/vim-javascript"]
+  path = .vim/bundle/vim-javascript
+  url = https://github.com/pangloss/vim-javascript.git
+  branch = master
