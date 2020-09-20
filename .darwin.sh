@@ -140,10 +140,10 @@ if ! $(${SKIP:-false}) && [[ -x /usr/sbin/softwareupdate ]]; then
   $(${UPDATE_ALL:-false}) || read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Check for MacOS updates?"
   if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
     unset REPLY
-    echo -e "\nUpdating MacOS in background mode"
-    sudo /usr/sbin/softwareupdate -a -i --background
+    echo -e "\nUpdating MacOS"
+    sudo /usr/sbin/softwareupdate -i -a
   else
-    echo -e "\nSkipping MacOS update check\nRun 'softwareupdate -a -i' to check manually"
+    echo -e "\nSkipping MacOS update check\nRun 'softwareupdate -i -a' to check manually"
   fi
 fi
 
