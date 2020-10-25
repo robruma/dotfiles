@@ -92,7 +92,7 @@ if ! $(${SKIP:-false}) && [[ -x /usr/local/bin/brew ]]; then
             /usr/local/bin/brew cu --yes --all --cleanup
             HOMEBREW_UPGRADE_RV=$?
           else
-            HOMEBREW_CASKS=($(/usr/local/bin/brew cask list -1))
+            HOMEBREW_CASKS=($(/usr/local/bin/brew list --cask -1))
             NEWLINE="\n"
             for EXCLUDED_CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
             do
