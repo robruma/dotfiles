@@ -60,7 +60,7 @@ if ! $(${SKIP:-false}) && [[ -x /usr/local/bin/brew ]]; then
           echo -e "\nSkipping Homebrew bundle install\nRun 'brew bundle --global' to install bundles manually"
         fi
       fi
-      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=($(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated && /usr/local/bin/brew cask outdated --greedy))
+      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=($(/usr/local/bin/brew update > /dev/null 2>&1 && /usr/local/bin/brew outdated --cask && /usr/local/bin/brew outdated --cask --greedy))
       HOMEBREW_OUTDATED_RV=$?
       spinner stop $HOMEBREW_OUTDATED_RV $!
       # Allow a comma-delimited cask upgrade exclude list by setting the environment variable HOMEBREW_CASK_UPGRADE_EXCLUDE in ~/.profile
