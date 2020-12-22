@@ -86,8 +86,7 @@ if ! $(${SKIP:-false}) && [[ -x /usr/local/bin/brew ]]; then
           echo -e "\nUpgrading outdated Homebrew packages\n"
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
           # Ensure outdated formulae are updated using --formula. See brew upgrade --formula
-          # Upgrade without building from source. See brew upgrade --force-bottle
-          /usr/local/bin/brew upgrade --ignore-pinned --formula --force-bottle
+          /usr/local/bin/brew upgrade --ignore-pinned --formula
           if [[ -z ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]} ]]; then
             echo -e "No exclude list found: Upgrading all casks\n"
             /usr/local/bin/brew cu --yes --all --cleanup
