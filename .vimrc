@@ -47,6 +47,7 @@ if has("autocmd")
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
   autocmd BufReadPost Jenkinsfile set syntax=groovy
+  autocmd BufRead,BufNewFile *.c set shiftwidth=4
   if v:version > 703
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
   endif
