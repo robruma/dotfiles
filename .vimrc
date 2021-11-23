@@ -38,6 +38,14 @@ let g:go_highlight_build_constraints=1
 let g:go_version_warning=0
 let g:vim_markdown_folding_disabled=1
 hi Search cterm=NONE ctermfg=grey ctermbg=red
+hi clear SpellBad
+hi SpellBad cterm=underline
+hi clear SpellRare
+hi SpellRare cterm=underline
+hi clear SpellCap
+hi SpellCap cterm=underline
+hi clear SpellLocal
+hi SpellLocal cterm=underline
 map <C-t> :Tab block<CR>
 map <C-n> :NERDTreeToggle<CR>
 map <C-j> :%!python -m json.tool<CR>
