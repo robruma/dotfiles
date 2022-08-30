@@ -22,3 +22,8 @@ export EDITOR=vim
 if [[ -d ${HOME}/.rvm/bin ]]; then
   export PATH="$PATH:$HOME/.rvm/bin"
 fi
+
+# Set command evaluation here
+if [[ -s ~/.eval ]]; then
+  . ~/.eval
+fi

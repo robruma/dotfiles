@@ -67,15 +67,17 @@ spinner() {
 # Source ~/.profile
 # Set user configurable environment variables here
 if [[ -s ~/.profile ]]; then
-  . ~/.profile
+  source ~/.profile
 fi
 
 # Source ~/.bashrc
+# Evaluated commands are executed through ~/.eval
 if [[ -s ~/.bashrc ]]; then
   . ~/.bashrc
 fi
 
 # Source ~/.alias
+# Set command aliases here
 if [[ -f ~/.alias ]]; then
   . ~/.alias
 fi
