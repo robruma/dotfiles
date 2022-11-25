@@ -5,13 +5,22 @@ if ! $(${SKIP:-false}) && [[ -x /usr/bin/xcode-select ]] && [[ ! -d /Library/Dev
   /usr/bin/xcode-select --install
 fi
 
+# Determine machine hardware
+HOMEBREW_MACHINE_HARDWARE_TYPE=$(uname -m)
+
+if [[ $HOMEBREW_MACHINE_HARDWARE_TYPE == "arm64" ]]; then
+  HOMEBREW_BIN_PATH=/opt/homebrew/bin/brew
+elif [[ $HOMEBREW_MACHINE_HARDWARE_TYPE == "x86_64" ]]; then
+  HOMEBREW_BIN_PATH=/usr/local/bin/brew
+fi
+
 # Install Homebrew
-if ! $(${SKIP:-false}) && [[ $(uname -s) == Darwin ]] && [[ ! -x /opt/homebrew/bin/brew ]]; then
+if ! $(${SKIP:-false}) && [[ $(uname -s) == Darwin ]] && [[ ! -x $HOMEBREW_BIN_PATH ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # Homebrew bash completion settings
-if [[ -x /opt/homebrew/bin/brew ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
+if [[ -x $HOMEBREW_BIN_PATH ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
@@ -21,12 +30,12 @@ if [[ -f /usr/libexec/java_home ]]; then
 fi
 
 # Homebrew getopt settings
-if [[ -x /opt/homebrew/bin/brew ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
+if [[ -x $HOMEBREW_BIN_PATH ]] && [[ -f $(brew --prefix gnu-getopt)/bin/getopt ]]; then
   export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
 # Keep Homebrew packages updated
-if ! $(${SKIP:-false}) && [[ -x /opt/homebrew/bin/brew ]]; then
+if ! $(${SKIP:-false}) && [[ -x $HOMEBREW_BIN_PATH ]]; then
   # Allow for an override to be applied across all package updates
   read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Bypass update prompts?"
   case $REPLY in
@@ -44,23 +53,23 @@ if ! $(${SKIP:-false}) && [[ -x /opt/homebrew/bin/brew ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
       unset REPLY
       # Ensure Homebrew bundles are installed
-      spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$(/opt/homebrew/bin/brew bundle check --global --no-upgrade)
+      spinner start "Checking the Brewfile's dependencies" & HOMEBREW_BUNDLED=$($HOMEBREW_BIN_PATH bundle check --global --no-upgrade)
       HOMEBREW_BUNDLED_RV=$?
       spinner stop $HOMEBREW_BUNDLED_RV $!
       echo -e $HOMEBREW_BUNDLED
       if [[ $HOMEBREW_BUNDLED_RV != 0 ]]; then
         echo -e "Ensuring Homebrew bundle tap is installed"
-        /opt/homebrew/bin/brew tap homebrew/bundle
+        $HOMEBREW_BIN_PATH tap homebrew/bundle
         $(${UPDATE_ALL:-false}) || read_prompt ${HOMEBREW_UPDATE_TIMEOUT:-5} "Install Homebrew bundles?"
         if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
           unset REPLY
           echo -e "\nInstalling Homebrew bundles"
-          /opt/homebrew/bin/brew bundle --global --no-upgrade
+          $HOMEBREW_BIN_PATH bundle --global --no-upgrade
         else
           echo -e "\nSkipping Homebrew bundle install\nRun 'brew bundle --global' to install bundles manually"
         fi
       fi
-      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=($(/opt/homebrew/bin/brew update > /dev/null 2>&1 && /opt/homebrew/bin/brew outdated && /opt/homebrew/bin/brew outdated --cask --greedy))
+      spinner start "Checking for Homebrew updates" & HOMEBREW_OUTDATED=($($HOMEBREW_BIN_PATH update > /dev/null 2>&1 && $HOMEBREW_BIN_PATH outdated && $HOMEBREW_BIN_PATH outdated --cask --greedy))
       HOMEBREW_OUTDATED_RV=$?
       spinner stop $HOMEBREW_OUTDATED_RV $!
       # Allow a comma-delimited cask upgrade exclude list by setting the environment variable HOMEBREW_CASK_UPGRADE_EXCLUDE in ~/.profile
@@ -86,13 +95,13 @@ if ! $(${SKIP:-false}) && [[ -x /opt/homebrew/bin/brew ]]; then
           echo -e "\nUpgrading outdated Homebrew packages\n"
           # Allow pinned formulae to be excluded from upgrade. See brew pin --help
           # Ensure outdated formulae are updated using --formula. See brew upgrade --formula
-          /opt/homebrew/bin/brew upgrade --ignore-pinned --formula
+          $HOMEBREW_BIN_PATH upgrade --ignore-pinned --formula
           if [[ -z ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]} ]]; then
             echo -e "No exclude list found: Upgrading all casks\n"
-            /opt/homebrew/bin/brew cu --yes --all --cleanup
+            $HOMEBREW_BIN_PATH cu --yes --all --cleanup
             HOMEBREW_UPGRADE_RV=$?
           else
-            HOMEBREW_CASKS=($(/opt/homebrew/bin/brew list --cask -1))
+            HOMEBREW_CASKS=($($HOMEBREW_BIN_PATH list --cask -1))
             NEWLINE="\n"
             for EXCLUDED_CASK in ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]}
             do
@@ -109,7 +118,7 @@ if ! $(${SKIP:-false}) && [[ -x /opt/homebrew/bin/brew ]]; then
                 fi
               done
             done
-            echo && /opt/homebrew/bin/brew upgrade --cask ${HOMEBREW_CASKS[@]}
+            echo && $HOMEBREW_BIN_PATH upgrade --cask ${HOMEBREW_CASKS[@]}
             HOMEBREW_UPGRADE_RV=$?
           fi
           if [[ $HOMEBREW_UPGRADE_RV != 0 ]]; then
