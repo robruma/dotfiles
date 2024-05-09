@@ -1,7 +1,7 @@
 # brew bundle --global
 tap 'buo/cask-upgrade'
 tap 'homebrew/cask-versions'
-tap 'homebrew/core'
+#tap 'homebrew/core'
 tap 'homebrew/services'
 tap 'weaveworks/tap'
 # Dependencies
