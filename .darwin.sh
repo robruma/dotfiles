@@ -93,9 +93,8 @@ if ! $(${SKIP:-false}) && [[ -x $HOMEBREW_BIN_PATH ]]; then
         if [[ $REPLY =~ ^[Yy]$ ]] || $(${UPDATE_ALL:-false}); then
           unset REPLY
           echo -e "\nUpgrading outdated Homebrew packages\n"
-          # Allow pinned formulae to be excluded from upgrade. See brew pin --help
           # Ensure outdated formulae are updated using --formula. See brew upgrade --formula
-          $HOMEBREW_BIN_PATH upgrade --ignore-pinned --formula
+          $HOMEBREW_BIN_PATH upgrade --formula
           if [[ -z ${HOMEBREW_CASK_UPGRADE_EXCLUDE[@]} ]]; then
             echo -e "No exclude list found: Upgrading all casks\n"
             $HOMEBREW_BIN_PATH cu --yes --all --cleanup
