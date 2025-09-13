@@ -37,6 +37,11 @@ let g:go_highlight_operators=1
 let g:go_highlight_build_constraints=1
 let g:go_version_warning=0
 let g:vim_markdown_folding_disabled=1
+let g:claude_map_implement = "<Leader>ci"
+let g:claude_map_open_chat = "<Leader>cc"
+let g:claude_map_send_chat_message = "<C-]>"
+let g:claude_map_cancel_response = "<Leader>cx"
+let g:claude_use_bedrock = 1
 hi Search cterm=NONE ctermfg=grey ctermbg=red
 hi clear SpellBad
 hi SpellBad cterm=underline
