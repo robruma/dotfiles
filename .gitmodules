@@ -106,3 +106,7 @@
   path = .vim/bundle/vim-javascript
   url = https://github.com/pangloss/vim-javascript.git
   branch = master
+[submodule ".vim/bundle/claude.vim"]
+  path = .vim/bundle/claude.vim
+  url = https://github.com/pasky/claude.vim.git
+  branch = master
