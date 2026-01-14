@@ -41,7 +41,13 @@ let g:claude_map_implement = "<Leader>ci"
 let g:claude_map_open_chat = "<Leader>cc"
 let g:claude_map_send_chat_message = "<C-]>"
 let g:claude_map_cancel_response = "<Leader>cx"
-let g:claude_use_bedrock = 1
+"let g:claude_use_bedrock = 1
+let g:claude_api_url = "https://go.dev.apis.huit.harvard.edu/ais-bedrock-llm/v2/model/us.anthropic.claude-sonnet-4-20250514-v1:0/invoke-with-response-stream"
+let g:claude_api_key = "MNPmbqH9CRmIBTsHNQAxABtn3ukDMA6Hq51ziyn93sIUhWXm"
+"let g:claude_bedrock_model_id = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+let g:claude_model = "us.anthropic.claude-sonnet-4-20250514-v1:0"
+let g:claude_bedrock_anthropic_version = "bedrock-2023-05-31"
+
 hi Search cterm=NONE ctermfg=grey ctermbg=red
 hi clear SpellBad
 hi SpellBad cterm=underline
